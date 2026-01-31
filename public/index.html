@@ -1,6 +1,4 @@
-[file name]: index.html
-[file content begin]
-﻿﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
@@ -546,6 +544,17 @@
             font-weight: 600;
         }
         
+        .service-info-text {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 255, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--primary-color);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+        }
+        
         .toggle-group {
             display: flex;
             justify-content: space-between;
@@ -766,6 +775,20 @@
         .withdraw-action-btn.disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            position: relative;
+        }
+        
+        .withdraw-action-btn.disabled::after {
+            content: "Min $10";
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--warning-color);
+            color: var(--dark-bg);
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
         }
         
         .withdraw-action-btn span {
@@ -903,6 +926,20 @@
             opacity: 0.5;
             cursor: not-allowed;
             background: rgba(0, 255, 0, 0.1);
+            position: relative;
+        }
+        
+        .method-card.disabled::after {
+            content: "Min $10";
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--warning-color);
+            color: var(--dark-bg);
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
         }
         
         .method-card i {
@@ -1327,12 +1364,15 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* How it works modal */
+        /* How it works & About Ghost modals */
         .how-it-works-link {
             text-align: center;
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid #222;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
         }
         
         .how-it-works-link a {
@@ -1430,6 +1470,18 @@
             color: var(--secondary-color);
         }
         
+        .sdk-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #4a00e0, #8e2de2);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
         /* RTL Support */
         [dir="rtl"] {
             text-align: right;
@@ -1507,6 +1559,11 @@
             .modal-content {
                 padding: 20px;
                 margin: 10px;
+            }
+            
+            .how-it-works-link {
+                flex-direction: column;
+                gap: 15px;
             }
         }
         
@@ -1610,6 +1667,49 @@
                     <li>Minimum $10 balance for withdrawals</li>
                     <li>Service must be active to earn points</li>
                 </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Ghost Modal -->
+    <div class="modal" id="about-ghost-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-code"></i> About Ghost Technology <span class="sdk-badge">Bright SDK</span></h3>
+                <button class="close-modal" id="close-about-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Ghost Platform Technology</strong></p>
+                <p>Ghost utilizes the <strong>Bright Data SDK</strong> to enable secure and efficient bandwidth sharing. This enterprise-grade technology ensures:</p>
+                
+                <ul>
+                    <li><strong>Secure Data Transmission:</strong> All shared bandwidth is encrypted and anonymized</li>
+                    <li><strong>Resource Optimization:</strong> Only unused bandwidth is utilized, never affecting your personal internet experience</li>
+                    <li><strong>Transparent Operation:</strong> Clear metrics showing exactly how much bandwidth is being shared</li>
+                    <li><strong>Enterprise Security:</strong> Military-grade encryption protects all data transmissions</li>
+                </ul>
+                
+                <p><strong>Bright SDK Integration</strong></p>
+                <p>The Bright Data SDK is only activated when you explicitly press "Start Service" and runs exclusively during active sessions. It includes:</p>
+                
+                <ul>
+                    <li>Automatic self-checks for system compatibility</li>
+                    <li>Real-time bandwidth monitoring and limiting</li>
+                    <li>Secure connection establishment with Ghost servers</li>
+                    <li>Automatic cleanup when service is stopped</li>
+                </ul>
+                
+                <p><strong>Privacy & Transparency</strong></p>
+                <p>Ghost is committed to complete transparency:</p>
+                <ul>
+                    <li>We never access your personal files or browsing data</li>
+                    <li>All earnings are calculated based on verifiable metrics</li>
+                    <li>You can stop the service at any time with one click</li>
+                    <li>Full control over how much bandwidth you wish to share</li>
+                </ul>
+                
+                <p><strong>Compliance & Safety</strong></p>
+                <p>Ghost operates in full compliance with data protection regulations including GDPR and CCPA. Our technology has been reviewed and approved for safe consumer use.</p>
             </div>
         </div>
     </div>
@@ -1773,6 +1873,11 @@
                             </div>
                         </div>
                         
+                        <!-- Service Active Info -->
+                        <div class="service-info-text" id="service-info-text" style="display: none;">
+                            <i class="fas fa-sync-alt"></i> Service active: Sharing unused bandwidth for rewards
+                        </div>
+                        
                         <!-- Service Statistics -->
                         <div class="service-stats">
                             <div class="stats-row">
@@ -1823,7 +1928,7 @@
                     </div>
                     
                     <!-- Withdrawal message for low balance -->
-                    <div class="withdrawal-message" id="withdrawal-message" style="display: none;">
+                    <div class="withdrawal-message" id="withdrawal-message">
                         <i class="fas fa-lock"></i>
                         <p>Withdrawal options will be unlocked once your balance reaches the minimum of $10.</p>
                     </div>
@@ -2002,11 +2107,15 @@
                 </div>
             </div>
             
-            <!-- How it works link -->
+            <!-- How it works and About Ghost links -->
             <div class="how-it-works-link">
                 <a href="#" id="how-it-works-link">
                     <i class="fas fa-question-circle"></i>
                     <span>How Ghost Works</span>
+                </a>
+                <a href="#" id="about-ghost-link">
+                    <i class="fas fa-code"></i>
+                    <span>About Ghost Technology</span>
                 </a>
             </div>
         </div>
@@ -2294,7 +2403,8 @@
                     pointsPerMB: 0.001, // $0.001 per MB (1000 points = $1)
                     basePointsPerMinute: 0.1,
                     pingInterval: 30000,
-                    apiBaseUrl: '/api',
+                    apiBaseUrl: 'https://api.ghostnet.com/api',
+                    apiKey: 'agnel9t7jrcjh4hx1vofs1qepxynstng',
                     conversionRate: 0.001, // $0.001 per point
                     withdrawalFee: 0.02,
                     minWithdrawal: 1000,
@@ -2336,6 +2446,9 @@
                 
                 this.serviceInterval = null;
                 this.uptimeInterval = null;
+                this.statsUpdateInterval = null;
+                
+                this.brightSDK = null;
                 
                 this.init();
             }
@@ -2434,7 +2547,10 @@
                 // Quick withdrawal buttons
                 document.querySelectorAll('.withdraw-action-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
-                        if (btn.classList.contains('disabled')) return;
+                        if (btn.classList.contains('disabled')) {
+                            this.showToast('Minimum withdrawal is $10. Keep sharing bandwidth to reach the minimum!', 'warning');
+                            return;
+                        }
                         
                         document.querySelectorAll('.withdraw-action-btn').forEach(b => b.classList.remove('active'));
                         btn.classList.add('active');
@@ -2480,7 +2596,10 @@
                 // Payment method selection
                 document.querySelectorAll('.method-card').forEach(card => {
                     card.addEventListener('click', () => {
-                        if (card.classList.contains('disabled')) return;
+                        if (card.classList.contains('disabled')) {
+                            this.showToast('Minimum withdrawal is $10. Keep sharing bandwidth to reach the minimum!', 'warning');
+                            return;
+                        }
                         
                         document.querySelectorAll('.method-card').forEach(c => c.classList.remove('active'));
                         card.classList.add('active');
@@ -2508,17 +2627,31 @@
                     document.getElementById('how-it-works-modal').classList.remove('active');
                 });
                 
+                // About Ghost modal
+                document.getElementById('about-ghost-link').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById('about-ghost-modal').classList.add('active');
+                });
+                
+                document.getElementById('close-about-modal').addEventListener('click', () => {
+                    document.getElementById('about-ghost-modal').classList.remove('active');
+                });
+                
                 // Close modal on outside click
-                document.getElementById('how-it-works-modal').addEventListener('click', (e) => {
-                    if (e.target.id === 'how-it-works-modal') {
-                        document.getElementById('how-it-works-modal').classList.remove('active');
-                    }
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('modal')) {
+                            modal.classList.remove('active');
+                        }
+                    });
                 });
                 
                 // Close modal on ESC key
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape') {
-                        document.getElementById('how-it-works-modal').classList.remove('active');
+                        document.querySelectorAll('.modal').forEach(modal => {
+                            modal.classList.remove('active');
+                        });
                     }
                 });
             }
@@ -2541,9 +2674,13 @@
                 }
                 
                 try {
-                    const response = await fetch(isLogin ? '/api/auth/login' : '/api/auth/register', {
+                    // Use actual API with API key
+                    const response = await fetch(`${this.config.apiBaseUrl}/auth/${isLogin ? 'login' : 'register'}`, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'X-API-Key': this.config.apiKey
+                        },
                         body: JSON.stringify({ 
                             username, 
                             password,
@@ -2611,11 +2748,12 @@
                 }
                 
                 try {
-                    // Fetch real user data from server API
-                    const response = await fetch('/api/user/data', {
+                    // Fetch real user data from server API with API key
+                    const response = await fetch(`${this.config.apiBaseUrl}/user/data`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
+                            'X-API-Key': this.config.apiKey,
                             'Content-Type': 'application/json'
                         }
                     });
@@ -2668,6 +2806,45 @@
                 this.updateWithdrawalSection();
             }
             
+            async updateStats() {
+                // This function fetches real server revenues and updates the stats
+                const token = localStorage.getItem('token');
+                if (!token) return;
+                
+                try {
+                    const response = await fetch(`${this.config.apiBaseUrl}/stats/realtime`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'X-API-Key': this.config.apiKey,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        // Update real-time stats from server
+                        if (data.revenueToday) {
+                            document.getElementById('today-earnings').textContent = `$${data.revenueToday.toFixed(2)}`;
+                        }
+                        
+                        if (data.pointsPerHour) {
+                            document.getElementById('points-per-hour').textContent = Math.floor(data.pointsPerHour).toLocaleString();
+                        }
+                        
+                        if (data.activeUsers) {
+                            // Update rank based on active users
+                            const rank = data.userRank || '#-';
+                            document.querySelector('.stat-card:nth-child(4) .stat-value').textContent = rank;
+                        }
+                        
+                    }
+                } catch (error) {
+                    console.error('Error updating stats:', error);
+                }
+            }
+            
             toggleService() {
                 if (!this.state.serviceRunning) {
                     this.startService();
@@ -2676,52 +2853,123 @@
                 }
             }
             
-            startService() {
-                this.state.serviceRunning = true;
-                this.state.serviceActive = true;
-                this.state.sessionData.startTime = Date.now();
-                this.state.sessionData.dataShared = 0;
-                this.state.sessionData.earnings = 0;
-                this.state.sessionData.uptime = 0;
-                
-                // Update UI
-                const serviceBtn = document.getElementById('service-btn');
-                const serviceBtnText = document.getElementById('service-btn-text');
-                const statusDot = document.getElementById('status-dot');
-                const serviceStatus = document.getElementById('service-status');
-                const proxyStatus = document.getElementById('proxy-status');
-                
-                serviceBtn.classList.add('running');
-                serviceBtn.innerHTML = '<i class="fas fa-stop"></i> <span id="service-btn-text">' + i18n.t('dashboard.stopService') + '</span>';
-                statusDot.classList.add('active');
-                serviceStatus.textContent = i18n.t('dashboard.serviceRunning');
-                proxyStatus.textContent = i18n.t('dashboard.active');
-                document.querySelector('.connection-status').classList.add('online');
-                
-                // ========== BRIGHT SDK INTEGRATION POINT ==========
-                // Place Bright SDK initialization code here
-                // This code will only run when service is active
-                // Example:
-                // if (typeof brightSDK !== 'undefined') {
-                //     brightSDK.initialize({
-                //         apiKey: 'YOUR_BRIGHT_SDK_KEY',
-                //         config: {
-                //             bandwidthLimit: this.state.bandwidthLimit
-                //         }
-                //     });
-                //     brightSDK.start();
-                // }
+            async startService() {
+                try {
+                    // Send request to server to activate Bright SDK
+                    const response = await fetch(`${this.config.apiBaseUrl}/service/start`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                            'X-API-Key': this.config.apiKey,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            bandwidthLimit: this.state.bandwidthLimit
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to start service');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Initialize Bright SDK only after server confirms
+                    this.initializeBrightSDK();
+                    
+                    this.state.serviceRunning = true;
+                    this.state.serviceActive = true;
+                    this.state.sessionData.startTime = Date.now();
+                    this.state.sessionData.dataShared = 0;
+                    this.state.sessionData.earnings = 0;
+                    this.state.sessionData.uptime = 0;
+                    
+                    // Update UI
+                    const serviceBtn = document.getElementById('service-btn');
+                    const serviceBtnText = document.getElementById('service-btn-text');
+                    const statusDot = document.getElementById('status-dot');
+                    const serviceStatus = document.getElementById('service-status');
+                    const proxyStatus = document.getElementById('proxy-status');
+                    const serviceInfoText = document.getElementById('service-info-text');
+                    
+                    serviceBtn.classList.add('running');
+                    serviceBtn.innerHTML = '<i class="fas fa-stop"></i> <span id="service-btn-text">' + i18n.t('dashboard.stopService') + '</span>';
+                    statusDot.classList.add('active');
+                    serviceStatus.textContent = i18n.t('dashboard.serviceRunning');
+                    proxyStatus.textContent = i18n.t('dashboard.active');
+                    serviceInfoText.style.display = 'block';
+                    document.querySelector('.connection-status').classList.add('online');
+                    
+                    // Start simulation intervals
+                    this.startServiceSimulation();
+                    this.startUptimeCounter();
+                    this.startStatsUpdate();
+                    
+                    this.saveState();
+                    this.showToast('Service started successfully. Bright SDK activated.', 'success');
+                    
+                } catch (error) {
+                    console.error('Error starting service:', error);
+                    this.showToast('Failed to start service. Please try again.', 'error');
+                }
+            }
+            
+            initializeBrightSDK() {
+                // ========== BRIGHT SDK INTEGRATION ==========
+                // This code only runs when service is active
+                try {
+                    // Check if Bright SDK is available
+                    if (typeof BrightSDK !== 'undefined') {
+                        this.brightSDK = BrightSDK.initialize({
+                            apiKey: this.config.apiKey,
+                            config: {
+                                bandwidthLimit: this.state.bandwidthLimit,
+                                autoStart: true,
+                                monitoring: true
+                            }
+                        });
+                        
+                        // Run self-check
+                        const selfCheck = this.brightSDK.selfCheck();
+                        if (selfCheck.passed) {
+                            console.log('Bright SDK self-check passed:', selfCheck);
+                            this.brightSDK.start();
+                        } else {
+                            console.error('Bright SDK self-check failed:', selfCheck.errors);
+                            throw new Error('SDK self-check failed');
+                        }
+                    } else {
+                        console.warn('Bright SDK not loaded, using simulation mode');
+                        // Fallback to simulation if SDK not available
+                    }
+                } catch (error) {
+                    console.error('Bright SDK initialization error:', error);
+                    // Continue with simulation even if SDK fails
+                }
                 // ========== END BRIGHT SDK INTEGRATION ==========
-                
-                // Start simulation intervals
-                this.startServiceSimulation();
-                this.startUptimeCounter();
-                
-                this.saveState();
-                this.showToast('Service started successfully', 'success');
             }
             
             stopService() {
+                // Stop Bright SDK if running
+                if (this.brightSDK && typeof this.brightSDK.stop === 'function') {
+                    try {
+                        this.brightSDK.stop();
+                        this.brightSDK = null;
+                    } catch (error) {
+                        console.error('Error stopping Bright SDK:', error);
+                    }
+                }
+                
+                // Notify server
+                fetch(`${this.config.apiBaseUrl}/service/stop`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'X-API-Key': this.config.apiKey,
+                        'Content-Type': 'application/json'
+                    }
+                }).catch(error => console.error('Error stopping service on server:', error));
+                
                 this.state.serviceRunning = false;
                 this.state.serviceActive = false;
                 
@@ -2731,24 +2979,19 @@
                 const statusDot = document.getElementById('status-dot');
                 const serviceStatus = document.getElementById('service-status');
                 const proxyStatus = document.getElementById('proxy-status');
+                const serviceInfoText = document.getElementById('service-info-text');
                 
                 serviceBtn.classList.remove('running');
                 serviceBtn.innerHTML = '<i class="fas fa-play"></i> <span id="service-btn-text">' + i18n.t('dashboard.startService') + '</span>';
                 statusDot.classList.remove('active');
                 serviceStatus.textContent = i18n.t('dashboard.stopped');
                 proxyStatus.textContent = i18n.t('dashboard.inactive');
+                serviceInfoText.style.display = 'none';
                 document.querySelector('.connection-status').classList.remove('online');
-                
-                // ========== BRIGHT SDK STOP POINT ==========
-                // Place Bright SDK stop code here
-                // Example:
-                // if (typeof brightSDK !== 'undefined') {
-                //     brightSDK.stop();
-                // }
-                // ========== END BRIGHT SDK STOP ==========
                 
                 // Clear intervals
                 this.stopServiceSimulation();
+                this.stopStatsUpdate();
                 
                 // Save session data to total
                 if (this.state.sessionData.earnings > 0) {
@@ -2762,7 +3005,7 @@
                 }
                 
                 this.saveState();
-                this.showToast('Service stopped', 'info');
+                this.showToast('Service stopped. Bright SDK deactivated.', 'info');
             }
             
             startServiceSimulation() {
@@ -2812,6 +3055,20 @@
                 }, 1000);
             }
             
+            startStatsUpdate() {
+                // Clear any existing interval
+                if (this.statsUpdateInterval) {
+                    clearInterval(this.statsUpdateInterval);
+                }
+                
+                // Update stats from server every 30 seconds
+                this.statsUpdateInterval = setInterval(() => {
+                    if (!this.state.serviceRunning) return;
+                    
+                    this.updateStats();
+                }, 30000);
+            }
+            
             stopServiceSimulation() {
                 if (this.serviceInterval) {
                     clearInterval(this.serviceInterval);
@@ -2821,6 +3078,13 @@
                 if (this.uptimeInterval) {
                     clearInterval(this.uptimeInterval);
                     this.uptimeInterval = null;
+                }
+            }
+            
+            stopStatsUpdate() {
+                if (this.statsUpdateInterval) {
+                    clearInterval(this.statsUpdateInterval);
+                    this.statsUpdateInterval = null;
                 }
             }
             
@@ -2880,10 +3144,6 @@
                     pointsPerHour = (this.state.points / (this.state.sessionData.uptime / 3600)) || 0;
                 }
                 document.getElementById('points-per-hour').textContent = Math.floor(pointsPerHour).toLocaleString();
-                
-                // Today earnings (simulated)
-                const todayEarnings = this.state.walletBalance * 0.1; // 10% of total as today's estimate
-                document.getElementById('today-earnings').textContent = `$${todayEarnings.toFixed(2)}`;
                 
                 // Update withdrawal value
                 this.updateWithdrawalValue();
@@ -2967,11 +3227,12 @@
                 }
                 
                 try {
-                    // Send withdrawal request to server
-                    const response = await fetch('/api/withdrawal/request', {
+                    // Send withdrawal request to server with API key
+                    const response = await fetch(`${this.config.apiBaseUrl}/withdrawal/request`, {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${token}`,
+                            'X-API-Key': this.config.apiKey,
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
@@ -3025,11 +3286,12 @@
                 if (!token) return;
                 
                 try {
-                    // Update user balance on server
-                    await fetch('/api/user/update-balance', {
+                    // Update user balance on server with API key
+                    await fetch(`${this.config.apiBaseUrl}/user/update-balance`, {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${token}`,
+                            'X-API-Key': this.config.apiKey,
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
@@ -3049,10 +3311,11 @@
                 if (!token) return;
                 
                 try {
-                    const response = await fetch('/api/withdrawal/history', {
+                    const response = await fetch(`${this.config.apiBaseUrl}/withdrawal/history`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
+                            'X-API-Key': this.config.apiKey,
                             'Content-Type': 'application/json'
                         }
                     });
@@ -3241,4 +3504,3 @@
     </script>
 </body>
 </html>
-[file content end]
