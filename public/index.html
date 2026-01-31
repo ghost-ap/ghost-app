@@ -1000,7 +1000,6 @@
         .copy-btn:hover {
             background: var(--primary-color);
             color: var(--dark-bg);
-            border-color: var(--primary-color);
         }
         
         .referral-stats {
@@ -1320,28 +1319,28 @@
     <div class="language-switcher">
         <button class="lang-btn" id="lang-btn">
             <i class="fas fa-globe"></i>
-            <span>English</span>
+            <span id="current-lang-text">English</span>
             <i class="fas fa-chevron-down"></i>
         </button>
         <div class="lang-dropdown" id="lang-dropdown">
             <div class="lang-option" data-lang="en">
-                <i class="fas fa-check" style="display: none;"></i>
+                <i class="fas fa-check" id="check-en"></i>
                 <span>English</span>
             </div>
             <div class="lang-option" data-lang="ar">
-                <i class="fas fa-check" style="display: none;"></i>
+                <i class="fas fa-check" id="check-ar" style="display: none;"></i>
                 <span>العربية</span>
             </div>
             <div class="lang-option" data-lang="es">
-                <i class="fas fa-check" style="display: none;"></i>
+                <i class="fas fa-check" id="check-es" style="display: none;"></i>
                 <span>Español</span>
             </div>
             <div class="lang-option" data-lang="fr">
-                <i class="fas fa-check" style="display: none;"></i>
+                <i class="fas fa-check" id="check-fr" style="display: none;"></i>
                 <span>Français</span>
             </div>
             <div class="lang-option" data-lang="de">
-                <i class="fas fa-check" style="display: none;"></i>
+                <i class="fas fa-check" id="check-de" style="display: none;"></i>
                 <span>Deutsch</span>
             </div>
         </div>
@@ -1353,48 +1352,67 @@
             <div class="logo">
                 <i class="fas fa-ghost"></i>
                 <h1>GHOST</h1>
-                <p class="tagline">Start earning money and grow your digital assets</p>
+                <p class="tagline" data-i18n="auth.tagline">Start earning money and grow your digital assets</p>
             </div>
             
-            <form class="auth-form" id="auth-form">
-                <div class="input-group">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="username" placeholder="Username" required>
-                </div>
-                
-                <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="Password" required>
-                </div>
-                
-                <div class="input-group">
-                    <i class="fas fa-user-plus"></i>
-                    <input type="text" id="referral-code" placeholder="Referral Code (Optional)">
-                </div>
-                
-                <button type="button" class="btn-primary" id="login-btn" onclick="handleAuth(true)">
-                    <i class="fas fa-sign-in-alt"></i> Login
-                </button>
-                
-                <button type="button" class="btn-secondary" id="register-btn" onclick="handleAuth(false)" style="display: none;">
-                    <i class="fas fa-user-plus"></i> Register
-                </button>
-                
-                <div class="auth-links">
-                    <div class="switch-auth">
-                        <span>Don't have an account?</span>
-                        <a href="#" id="show-register">Register</a>
+            <div class="auth-forms">
+                <!-- Login Form -->
+                <form class="auth-form active" id="login-form">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="login-username" placeholder="Username" required>
                     </div>
-                    <div class="switch-auth" style="display: none;">
-                        <span>Already have an account?</span>
-                        <a href="#" id="show-login">Login</a>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="login-password" placeholder="Password" required>
                     </div>
-                </div>
+                    
+                    <button type="button" class="btn-primary" id="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> <span data-i18n="auth.login">Login</span>
+                    </button>
+                    
+                    <div class="auth-links">
+                        <div class="switch-auth">
+                            <span data-i18n="auth.noAccount">Don't have an account?</span>
+                            <a href="#" id="show-register-link" data-i18n="auth.registerLink">Register</a>
+                        </div>
+                    </div>
+                </form>
                 
-                <div class="terms">
-                    By using Ghost, you agree to our Terms of Service and Privacy Policy
-                </div>
-            </form>
+                <!-- Register Form -->
+                <form class="auth-form" id="register-form" style="display: none;">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="register-username" placeholder="Username" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="register-password" placeholder="Password" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-user-plus"></i>
+                        <input type="text" id="register-referral-code" placeholder="Referral Code (Optional)">
+                    </div>
+                    
+                    <button type="button" class="btn-primary" id="register-btn">
+                        <i class="fas fa-user-plus"></i> <span data-i18n="auth.register">Register</span>
+                    </button>
+                    
+                    <div class="auth-links">
+                        <div class="switch-auth">
+                            <span data-i18n="auth.hasAccount">Already have an account?</span>
+                            <a href="#" id="show-login-link" data-i18n="auth.loginLink">Login</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="terms" data-i18n="auth.terms">
+                By using Ghost, you agree to our Terms of Service and Privacy Policy
+            </div>
         </div>
 
         <!-- Dashboard Screen -->
@@ -1408,23 +1426,23 @@
                 
                 <div class="user-info">
                     <div class="user-greeting">
-                        Welcome, <strong id="user-display">User</strong>
+                        <span data-i18n="dashboard.welcome">Welcome,</span> <strong id="user-display">User</strong>
                     </div>
                     <div class="user-stats">
-                        <span class="level-badge">Level <span id="level-value">1</span></span>
+                        <span class="level-badge"><span data-i18n="dashboard.level">Level</span> <span id="level-value">1</span></span>
                         <span class="connection-status">
                             <span class="status-dot"></span>
-                            <span id="proxy-status">Inactive</span>
+                            <span id="proxy-status" data-i18n="dashboard.inactive">Inactive</span>
                         </span>
                     </div>
                 </div>
                 
                 <div class="header-actions">
                     <button class="header-btn" id="refresh-btn">
-                        <i class="fas fa-sync-alt"></i> Refresh
+                        <i class="fas fa-sync-alt"></i> <span data-i18n="dashboard.refresh">Refresh</span>
                     </button>
                     <button class="btn-logout" id="logout-btn">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <i class="fas fa-sign-out-alt"></i> <span data-i18n="auth.logout">Logout</span>
                     </button>
                 </div>
             </div>
@@ -1434,7 +1452,7 @@
                 <!-- Points Card -->
                 <div class="points-card">
                     <div class="card-header">
-                        <h3><i class="fas fa-coins"></i> Your Points</h3>
+                        <h3><i class="fas fa-coins"></i> <span data-i18n="dashboard.yourPoints">Your Points</span></h3>
                         <div class="refresh-btn" id="refresh-points">
                             <i class="fas fa-redo"></i>
                         </div>
@@ -1452,14 +1470,14 @@
                         <div class="detail-item">
                             <i class="fas fa-database"></i>
                             <div>
-                                <span>Shared Data</span>
+                                <span data-i18n="dashboard.sharedData">Shared Data</span>
                                 <strong id="shared-data">0 GB</strong>
                             </div>
                         </div>
                         <div class="detail-item">
                             <i class="fas fa-clock"></i>
                             <div>
-                                <span>Connection Time</span>
+                                <span data-i18n="dashboard.connectionTime">Connection Time</span>
                                 <strong id="connection-time">0h 0m</strong>
                             </div>
                         </div>
@@ -1469,16 +1487,16 @@
                 <!-- Service Control Card -->
                 <div class="control-card">
                     <div class="card-header">
-                        <h3><i class="fas fa-play-circle"></i> Service Control</h3>
+                        <h3><i class="fas fa-play-circle"></i> <span data-i18n="dashboard.serviceControl">Service Control</span></h3>
                         <div class="status-indicator">
                             <span class="status-dot" id="status-dot"></span>
-                            <span id="service-status">Stopped</span>
+                            <span id="service-status" data-i18n="dashboard.stopped">Stopped</span>
                         </div>
                     </div>
                     
                     <div class="control-options">
                         <div class="toggle-group">
-                            <span>Start Service</span>
+                            <span data-i18n="dashboard.startService">Start Service</span>
                             <label class="switch">
                                 <input type="checkbox" id="service-toggle">
                                 <span class="slider"></span>
@@ -1486,7 +1504,7 @@
                         </div>
                         
                         <div class="toggle-group">
-                            <span>Background Mode</span>
+                            <span data-i18n="dashboard.backgroundMode">Background Mode</span>
                             <label class="switch">
                                 <input type="checkbox" id="background-mode-toggle" checked>
                                 <span class="slider"></span>
@@ -1494,7 +1512,7 @@
                         </div>
                         
                         <div class="bandwidth-control">
-                            <label>Bandwidth Limit</label>
+                            <label data-i18n="dashboard.bandwidthLimit">Bandwidth Limit</label>
                             <div class="slider-container">
                                 <input type="range" id="bandwidth-limit" min="1" max="100" value="10">
                                 <span id="limit-value">10 GB</span>
@@ -1503,7 +1521,7 @@
                         
                         <div class="control-info">
                             <i class="fas fa-info-circle"></i>
-                            Service runs in background to earn points even when app is closed
+                            <span data-i18n="dashboard.serviceInfo">Service runs in background to earn points even when app is closed</span>
                         </div>
                     </div>
                 </div>
@@ -1511,7 +1529,7 @@
                 <!-- Withdrawal Card -->
                 <div class="withdrawal-card">
                     <div class="card-header">
-                        <h3><i class="fas fa-wallet"></i> Withdraw Earnings</h3>
+                        <h3><i class="fas fa-wallet"></i> <span data-i18n="dashboard.withdrawEarnings">Withdraw Earnings</span></h3>
                         <div class="wallet-balance">
                             <i class="fas fa-dollar-sign"></i>
                             <span id="wallet-balance">$0.00</span>
@@ -1520,11 +1538,11 @@
                     
                     <div class="balance-info">
                         <div class="balance-item">
-                            <span>Total Earnings</span>
+                            <span data-i18n="dashboard.totalEarnings">Total Earnings</span>
                             <strong id="total-earnings">$0.00</strong>
                         </div>
                         <div class="balance-item">
-                            <span>Available Points</span>
+                            <span data-i18n="dashboard.availablePoints">Available Points</span>
                             <strong id="available-points">0</strong>
                         </div>
                     </div>
@@ -1552,7 +1570,7 @@
                         <div class="input-group">
                             <input type="number" id="withdrawal-amount" placeholder="Enter points (min: 1000)" min="1000">
                             <button class="btn-primary" id="withdraw-btn">
-                                <i class="fas fa-money-bill-wave"></i> Withdraw
+                                <i class="fas fa-money-bill-wave"></i> <span data-i18n="withdrawal.withdraw">Withdraw</span>
                             </button>
                         </div>
                         <div class="conversion">
@@ -1562,22 +1580,22 @@
                     </div>
                     
                     <div class="payment-methods">
-                        <h4>Payment Methods</h4>
+                        <h4 data-i18n="withdrawal.paymentMethods">Payment Methods</h4>
                         <div class="methods-grid">
                             <div class="method-card active" data-method="paypal">
                                 <i class="fab fa-paypal"></i>
                                 <span>PayPal</span>
-                                <small>Instant</small>
+                                <small data-i18n="withdrawal.instant">Instant</small>
                             </div>
                             <div class="method-card" data-method="bank">
                                 <i class="fas fa-university"></i>
-                                <span>Bank</span>
-                                <small>3-5 days</small>
+                                <span data-i18n="withdrawal.bank">Bank</span>
+                                <small data-i18n="withdrawal.days">3-5 days</small>
                             </div>
                             <div class="method-card" data-method="crypto">
                                 <i class="fas fa-coins"></i>
-                                <span>Crypto</span>
-                                <small>Instant</small>
+                                <span data-i18n="withdrawal.crypto">Crypto</span>
+                                <small data-i18n="withdrawal.instant">Instant</small>
                             </div>
                         </div>
                     </div>
@@ -1590,7 +1608,7 @@
                             <i class="fas fa-bolt"></i>
                         </div>
                         <div class="stat-content">
-                            <h4>Points/Hour</h4>
+                            <h4 data-i18n="stats.pointsPerHour">Points/Hour</h4>
                             <div class="stat-value" id="points-per-hour">5</div>
                             <div class="stat-trend">+2%</div>
                         </div>
@@ -1600,7 +1618,7 @@
                             <i class="fas fa-users"></i>
                         </div>
                         <div class="stat-content">
-                            <h4>Referrals</h4>
+                            <h4 data-i18n="stats.referrals">Referrals</h4>
                             <div class="stat-value" id="total-referrals">0</div>
                             <div class="stat-trend">+500 pts</div>
                         </div>
@@ -1610,7 +1628,7 @@
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <div class="stat-content">
-                            <h4>Today</h4>
+                            <h4 data-i18n="stats.today">Today</h4>
                             <div class="stat-value" id="today-earnings">$0.00</div>
                             <div class="stat-trend">+15%</div>
                         </div>
@@ -1620,7 +1638,7 @@
                             <i class="fas fa-trophy"></i>
                         </div>
                         <div class="stat-content">
-                            <h4>Rank</h4>
+                            <h4 data-i18n="stats.rank">Rank</h4>
                             <div class="stat-value">#1</div>
                             <div class="stat-trend">Top 1%</div>
                         </div>
@@ -1630,17 +1648,17 @@
                 <!-- History Card -->
                 <div class="history-card">
                     <div class="card-header">
-                        <h3><i class="fas fa-history"></i> Withdrawal History</h3>
+                        <h3><i class="fas fa-history"></i> <span data-i18n="dashboard.withdrawalHistory">Withdrawal History</span></h3>
                         <div class="history-filters">
-                            <button class="filter-btn active" data-filter="all">All</button>
-                            <button class="filter-btn" data-filter="pending">Pending</button>
-                            <button class="filter-btn" data-filter="completed">Completed</button>
+                            <button class="filter-btn active" data-filter="all" data-i18n="history.all">All</button>
+                            <button class="filter-btn" data-filter="pending" data-i18n="history.pending">Pending</button>
+                            <button class="filter-btn" data-filter="completed" data-i18n="history.completed">Completed</button>
                         </div>
                     </div>
                     
                     <div class="history-container">
                         <div class="history-list" id="withdrawal-history">
-                            <div class="empty-history">No withdrawal history yet</div>
+                            <div class="empty-history" data-i18n="history.empty">No withdrawal history yet</div>
                         </div>
                     </div>
                 </div>
@@ -1648,13 +1666,13 @@
                 <!-- Referral Card -->
                 <div class="referral-card">
                     <div class="card-header">
-                        <h3><i class="fas fa-user-plus"></i> Referral Program</h3>
+                        <h3><i class="fas fa-user-plus"></i> <span data-i18n="dashboard.referralProgram">Referral Program</span></h3>
                         <div class="referral-bonus">+500 points</div>
                     </div>
                     
                     <div class="referral-content">
                         <div class="referral-code">
-                            <label>Your Referral Code</label>
+                            <label data-i18n="referral.yourCode">Your Referral Code</label>
                             <div class="code-display">
                                 <span id="user-referral-code">GHOST123</span>
                                 <button class="copy-btn" id="copy-referral-code">
@@ -1665,17 +1683,17 @@
                         
                         <div class="referral-stats">
                             <div class="stat">
-                                <span>Total Referrals</span>
+                                <span data-i18n="referral.totalReferrals">Total Referrals</span>
                                 <strong id="total-referrals-count">0</strong>
                             </div>
                             <div class="stat">
-                                <span>Bonus Earned</span>
+                                <span data-i18n="referral.bonusEarned">Bonus Earned</span>
                                 <strong id="referral-bonus">0 pts</strong>
                             </div>
                         </div>
                         
                         <div class="referral-share">
-                            <p>Share with friends and earn 500 points for each successful referral!</p>
+                            <p data-i18n="referral.shareMessage">Share with friends and earn 500 points for each successful referral!</p>
                             <div class="share-buttons">
                                 <button class="share-btn" id="share-whatsapp">
                                     <i class="fab fa-whatsapp"></i>
@@ -1694,246 +1712,168 @@
         </div>
     </div>
 
-    <!-- Modals -->
-    <div class="modal" id="withdrawal-modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Withdrawal Request</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="withdrawal-form">
-                    <div class="input-group">
-                        <label>Payment Method</label>
-                        <select class="form-select" id="withdrawal-method-select">
-                            <option value="paypal">PayPal</option>
-                            <option value="bank">Bank Transfer</option>
-                            <option value="crypto">Cryptocurrency</option>
-                        </select>
-                    </div>
-                    
-                    <div class="method-details" id="method-details-container">
-                        <!-- Method details will be loaded here -->
-                    </div>
-                    
-                    <div class="input-group">
-                        <label>Points to Withdraw</label>
-                        <div class="input-with-conversion">
-                            <input type="number" id="withdrawal-amount-input" min="1000" value="1000">
-                            <div class="conversion-display">
-                                <span id="modal-conversion">$10.00</span>
-                                <small>Available: <span id="modal-available">0</span> points</small>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="amount-info">
-                        <span>Minimum withdrawal: 1000 points ($10)</span>
-                        <span>Fee: 2%</span>
-                    </div>
-                    
-                    <div class="withdrawal-summary">
-                        <h4>Summary</h4>
-                        <div class="summary-item">
-                            <span>Points</span>
-                            <span id="summary-amount">1000 points</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Value</span>
-                            <span id="summary-value">$10.00</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Fee (2%)</span>
-                            <span id="summary-fee">$0.20</span>
-                        </div>
-                        <div class="summary-item total">
-                            <span>You Receive</span>
-                            <span id="summary-net">$9.80</span>
-                        </div>
-                    </div>
-                    
-                    <div class="modal-actions">
-                        <button type="submit" class="btn-primary">
-                            <i class="fas fa-check"></i> Confirm Withdrawal
-                        </button>
-                        <button type="button" class="btn-secondary close-modal">
-                            Cancel
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    
-    <div class="modal success-modal" id="success-modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Withdrawal Requested!</h3>
-                <button class="close-modal close-success-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="success-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h3>Request Submitted</h3>
-                <p>Your withdrawal request has been submitted successfully.</p>
-                
-                <div class="success-details">
-                    <div class="detail-item">
-                        <span>Request ID</span>
-                        <span id="success-request-id">#WD123456</span>
-                    </div>
-                    <div class="detail-item">
-                        <span>Amount</span>
-                        <span id="success-amount">1000 points</span>
-                    </div>
-                    <div class="detail-item">
-                        <span>Status</span>
-                        <span class="status-pending">Pending</span>
-                    </div>
-                    <div class="detail-item">
-                        <span>Processing Time</span>
-                        <span>24-48 hours</span>
-                    </div>
-                </div>
-                
-                <button class="btn-primary close-success-modal">
-                    <i class="fas fa-check"></i> Done
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    
     <script>
-        // Authentication function - Fixed version
+        // ========== POWERFUL AUTH FUNCTION ==========
         async function handleAuth(isLogin) {
-            // Specify fields precisely based on the operation type
-            const username = document.getElementById("username")?.value;
-            const password = document.getElementById("password")?.value;
-            const referralCode = document.getElementById("referral-code")?.value;
+            const usernameId = isLogin ? 'login-username' : 'register-username';
+            const passwordId = isLogin ? 'login-password' : 'register-password';
             
-            const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
+            const username = document.getElementById(usernameId)?.value;
+            const password = document.getElementById(passwordId)?.value;
             
             if (!username || !password) {
-                alert("Please enter username and password");
+                alert(currentLanguage === 'ar' ? "Please fill all fields" : "Please fill all fields");
                 return;
             }
             
             try {
-                const body = isLogin ? 
-                    { username, password } :
-                    { username, password, referralCode };
-                
-                const res = await fetch(endpoint, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(body)
+                const response = await fetch(isLogin ? '/api/auth/login' : '/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
                 });
                 
-                const data = await res.json();
+                const data = await response.json();
                 
-                if (res.ok) {
-                    alert(isLogin ? "Login successful!" : "Account created successfully!");
+                if (response.ok) {
+                    alert(currentLanguage === 'ar' ? "Success!" : "Success!");
                     
-                    if (isLogin) {
-                        localStorage.setItem("token", data.token);
-                        localStorage.setItem("username", username);
-                        
-                        // Switch to dashboard
-                        document.getElementById("auth-screen").classList.remove("active");
-                        document.getElementById("dashboard").classList.add("active");
-                        
-                        // Update user display
-                        document.getElementById("user-display").textContent = username;
-                        
-                        // Initialize dashboard
-                        if (typeof app !== 'undefined') {
-                            app.state.username = username;
-                            app.state.token = data.token;
-                            app.state.userId = data.userId || username;
-                            app.loadDashboardData();
-                        }
-                    } else {
-                        // After registration, switch to login mode
-                        document.getElementById("login-btn").style.display = "block";
-                        document.getElementById("register-btn").style.display = "none";
-                        document.querySelector(".switch-auth:nth-child(1)").style.display = "none";
-                        document.querySelector(".switch-auth:nth-child(2)").style.display = "block";
-                        
-                        // Clear password field
-                        document.getElementById("password").value = "";
-                        
-                        alert("Registration successful! Please login with your credentials.");
+                    localStorage.setItem('token', data.token); // Save login key
+                    localStorage.setItem('username', username);
+                    
+                    // Switch to dashboard without reloading
+                    document.getElementById('auth-screen').classList.remove('active');
+                    document.getElementById('dashboard').classList.add('active');
+                    
+                    // Update user display
+                    document.getElementById('user-display').textContent = username;
+                    
+                    // Initialize dashboard
+                    if (window.ghostApp) {
+                        window.ghostApp.state.username = username;
+                        window.ghostApp.state.token = data.token;
+                        window.ghostApp.loadDashboardData();
                     }
+                    
                 } else {
-                    alert("Error: " + (data.error || "Operation failed"));
-                }
-            } catch (e) {
-                console.error("Auth error:", e);
-                alert("An error occurred connecting to the server");
+                    alert(data.error || "Error");
+                } 
+            } catch (error) { 
+                console.error("Auth Error:", error); 
+                alert("Server connection failed"); 
             }
         }
         
-        // Internationalization
+        // ========== INTERNATIONALIZATION SYSTEM ==========
         const i18n = {
             translations: {
                 en: {
+                    siteTitle: "Ghost - Bandwidth Sharing Platform",
+                    language: {
+                        english: "English",
+                        arabic: "Arabic",
+                        spanish: "Spanish",
+                        french: "French",
+                        german: "German"
+                    },
                     auth: {
+                        tagline: "Start earning money and grow your digital assets",
                         login: "Login",
                         register: "Register",
                         username: "Username",
                         password: "Password",
                         referralCode: "Referral Code (Optional)",
+                        noAccount: "Don't have an account?",
+                        hasAccount: "Already have an account?",
+                        registerLink: "Register",
+                        loginLink: "Login",
+                        terms: "By using Ghost, you agree to our Terms of Service and Privacy Policy",
+                        logout: "Logout",
                         loginSuccess: "Login successful!",
                         registerSuccess: "Registration successful!",
                         logoutSuccess: "Logged out successfully",
                         requiredFields: "Please fill in all required fields",
                         passwordLength: "Password must be at least 6 characters",
                         loginFailed: "Login failed. Please try again.",
-                        registerFailed: "Registration failed. Please try again."
+                        registerFailed: "Registration failed. Please try again.",
+                        authFailed: "Authentication failed",
+                        authError: "An error occurred during authentication"
                     },
                     dashboard: {
-                        active: "Active",
-                        inactive: "Inactive",
-                        startService: "Start Service",
-                        stopService: "Stop Service",
-                        points: "Points",
+                        welcome: "Welcome,",
+                        level: "Level",
+                        refresh: "Refresh",
+                        yourPoints: "Your Points",
                         sharedData: "Shared Data",
                         connectionTime: "Connection Time",
+                        serviceControl: "Service Control",
+                        startService: "Start Service",
+                        backgroundMode: "Background Mode",
+                        bandwidthLimit: "Bandwidth Limit",
+                        serviceInfo: "Service runs in background to earn points even when app is closed",
                         withdrawEarnings: "Withdraw Earnings",
                         totalEarnings: "Total Earnings",
                         availablePoints: "Available Points",
-                        serviceControl: "Service Control",
-                        backgroundMode: "Background Mode",
-                        bandwidthLimit: "Bandwidth Limit",
                         withdrawalHistory: "Withdrawal History",
                         referralProgram: "Referral Program",
-                        yourReferralCode: "Your Referral Code",
-                        totalReferrals: "Total Referrals",
-                        bonusEarned: "Bonus Earned",
+                        active: "Active",
+                        inactive: "Inactive",
+                        stopped: "Stopped",
                         refreshed: "Dashboard refreshed!"
                     },
+                    stats: {
+                        pointsPerHour: "Points/Hour",
+                        referrals: "Referrals",
+                        today: "Today",
+                        rank: "Rank"
+                    },
                     withdrawal: {
+                        enterPoints: "Enter points (min: 1000)",
+                        withdraw: "Withdraw",
+                        paymentMethods: "Payment Methods",
+                        instant: "Instant",
+                        bank: "Bank",
+                        crypto: "Crypto",
+                        days: "3-5 days",
                         minimumPoints: "Minimum withdrawal is 1000 points ($10)",
                         insufficientPoints: "Insufficient points",
-                        requiredField: "Please fill in all required fields",
-                        submitRequest: "Submit Request",
-                        paymentMethod: "Payment Method",
-                        pointsToWithdraw: "Points to Withdraw",
-                        summary: "Summary",
-                        youReceive: "You Receive",
-                        confirmWithdrawal: "Confirm Withdrawal",
+                        requiredField: "Please fill in all required fields"
+                    },
+                    history: {
+                        all: "All",
                         pending: "Pending",
-                        processing: "Processing",
                         completed: "Completed",
-                        failed: "Failed",
-                        noHistory: "No withdrawal history yet"
+                        empty: "No withdrawal history yet"
                     },
                     referral: {
+                        yourCode: "Your Referral Code",
+                        totalReferrals: "Total Referrals",
+                        bonusEarned: "Bonus Earned",
+                        shareMessage: "Share with friends and earn 500 points for each successful referral!",
                         copied: "Referral code copied to clipboard!"
+                    },
+                    modal: {
+                        withdrawalRequest: "Withdrawal Request",
+                        paymentMethod: "Payment Method",
+                        pointsToWithdraw: "Points to Withdraw",
+                        available: "Available:",
+                        minimum: "Minimum withdrawal: 1000 points ($10)",
+                        fee: "Fee: 2%",
+                        summary: "Summary",
+                        points: "Points",
+                        value: "Value",
+                        youReceive: "You Receive",
+                        confirmWithdrawal: "Confirm Withdrawal",
+                        cancel: "Cancel",
+                        successTitle: "Withdrawal Requested!",
+                        requestSubmitted: "Request Submitted",
+                        successMessage: "Your withdrawal request has been submitted successfully.",
+                        requestId: "Request ID",
+                        amount: "Amount",
+                        status: "Status",
+                        processingTime: "Processing Time",
+                        done: "Done",
+                        pending: "Pending"
                     },
                     error: {
                         withdrawal: "Withdrawal request failed",
@@ -1941,242 +1881,253 @@
                     }
                 },
                 ar: {
+                    siteTitle: "شبح - منصة مشاركة النطاق الترددي",
+                    language: {
+                        english: "الإنجليزية",
+                        arabic: "العربية"
+                    },
                     auth: {
+                        tagline: "ابدأ في كسب المال ونمو أصولك الرقمية",
                         login: "تسجيل الدخول",
                         register: "إنشاء حساب",
                         username: "اسم المستخدم",
                         password: "كلمة المرور",
                         referralCode: "كود الإحالة (اختياري)",
+                        noAccount: "ليس لديك حساب؟",
+                        hasAccount: "هل لديك حساب بالفعل؟",
+                        registerLink: "إنشاء حساب",
+                        loginLink: "تسجيل الدخول",
+                        terms: "باستخدام Ghost، فإنك توافق على شروط الخدمة وسياسة الخصوصية",
+                        logout: "تسجيل الخروج",
                         loginSuccess: "تم تسجيل الدخول بنجاح!",
                         registerSuccess: "تم إنشاء الحساب بنجاح!",
                         logoutSuccess: "تم تسجيل الخروج بنجاح",
                         requiredFields: "يرجى ملء جميع الحقول المطلوبة",
                         passwordLength: "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
                         loginFailed: "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.",
-                        registerFailed: "فشل إنشاء الحساب. يرجى المحاولة مرة أخرى."
+                        registerFailed: "فشل إنشاء الحساب. يرجى المحاولة مرة أخرى.",
+                        authFailed: "فشل المصادقة",
+                        authError: "حدث خطأ أثناء المصادقة"
                     },
                     dashboard: {
-                        active: "نشط",
-                        inactive: "غير نشط",
-                        startService: "بدء الخدمة",
-                        stopService: "إيقاف الخدمة",
-                        points: "النقاط",
+                        welcome: "مرحباً،",
+                        level: "المستوى",
+                        refresh: "تحديث",
+                        yourPoints: "نقاطك",
                         sharedData: "البيانات المشتركة",
                         connectionTime: "وقت الاتصال",
+                        serviceControl: "تحكم الخدمة",
+                        startService: "بدء الخدمة",
+                        backgroundMode: "وضع الخلفية",
+                        bandwidthLimit: "حد النطاق الترددي",
+                        serviceInfo: "تعمل الخدمة في الخلفية لكسب النقاط حتى عند إغلاق التطبيق",
                         withdrawEarnings: "سحب الأرباح",
                         totalEarnings: "إجمالي الأرباح",
                         availablePoints: "النقاط المتاحة",
-                        serviceControl: "تحكم الخدمة",
-                        backgroundMode: "وضع الخلفية",
-                        bandwidthLimit: "حد النطاق الترددي",
                         withdrawalHistory: "سجل السحوبات",
                         referralProgram: "برنامج الإحالة",
-                        yourReferralCode: "كود الإحالة الخاص بك",
-                        totalReferrals: "إجمالي الإحالات",
-                        bonusEarned: "المكافآت المكتسبة",
+                        active: "نشط",
+                        inactive: "غير نشط",
+                        stopped: "متوقف",
                         refreshed: "تم تحديث لوحة التحكم!"
-                    },
-                    withdrawal: {
-                        minimumPoints: "الحد الأدنى للسحب هو 1000 نقطة (10$)",
-                        insufficientPoints: "نقاط غير كافية",
-                        requiredField: "يرجى ملء جميع الحقول المطلوبة",
-                        submitRequest: "تقديم الطلب",
-                        paymentMethod: "طريقة الدفع",
-                        pointsToWithdraw: "النقاط للسحب",
-                        summary: "ملخص",
-                        youReceive: "المبلغ المستلم",
-                        confirmWithdrawal: "تأكيد السحب",
-                        pending: "قيد الانتظار",
-                        processing: "قيد المعالجة",
-                        completed: "مكتمل",
-                        failed: "فشل",
-                        noHistory: "لا يوجد سجل سحوبات بعد"
-                    },
-                    referral: {
-                        copied: "تم نسخ كود الإحالة إلى الحافظة!"
-                    },
-                    error: {
-                        withdrawal: "فشل طلب السحب",
-                        copy: "فشل النسخ إلى الحافظة"
                     }
                 },
                 es: {
+                    siteTitle: "Fantasma - Plataforma para Compartir Ancho de Banda",
+                    language: {
+                        english: "Inglés",
+                        spanish: "Español"
+                    },
                     auth: {
+                        tagline: "Comienza a ganar dinero y haz crecer tus activos digitales",
                         login: "Iniciar sesión",
                         register: "Registrarse",
                         username: "Nombre de usuario",
                         password: "Contraseña",
                         referralCode: "Código de referencia (Opcional)",
+                        noAccount: "¿No tienes una cuenta?",
+                        hasAccount: "¿Ya tienes una cuenta?",
+                        registerLink: "Registrarse",
+                        loginLink: "Iniciar sesión",
+                        terms: "Al usar Ghost, aceptas nuestros Términos de Servicio y Política de Privacidad",
+                        logout: "Cerrar sesión",
                         loginSuccess: "¡Inicio de sesión exitoso!",
                         registerSuccess: "¡Registro exitoso!",
                         logoutSuccess: "Sesión cerrada exitosamente",
                         requiredFields: "Por favor complete todos los campos requeridos",
                         passwordLength: "La contraseña debe tener al menos 6 caracteres",
                         loginFailed: "Error al iniciar sesión. Por favor, inténtelo de nuevo.",
-                        registerFailed: "Error al registrarse. Por favor, inténtelo de nuevo."
-                    },
-                    dashboard: {
-                        active: "Activo",
-                        inactive: "Inactivo",
-                        startService: "Iniciar servicio",
-                        stopService: "Detener servicio",
-                        points: "Puntos",
-                        sharedData: "Datos compartidos",
-                        connectionTime: "Tiempo de conexión",
-                        withdrawEarnings: "Retirar ganancias",
-                        totalEarnings: "Ganancias totales",
-                        availablePoints: "Puntos disponibles",
-                        serviceControl: "Control de servicio",
-                        backgroundMode: "Modo en segundo plano",
-                        bandwidthLimit: "Límite de ancho de banda",
-                        withdrawalHistory: "Historial de retiros",
-                        referralProgram: "Programa de referidos",
-                        yourReferralCode: "Tu código de referido",
-                        totalReferrals: "Total de referidos",
-                        bonusEarned: "Bonos ganados",
-                        refreshed: "¡Panel actualizado!"
+                        registerFailed: "Error al registrarse. Por favor, inténtelo de nuevo.",
+                        authFailed: "Error de autenticación",
+                        authError: "Ocurrió un error durante la autenticación"
                     }
                 },
                 fr: {
+                    siteTitle: "Fantôme - Plateforme de Partage de Bande Passante",
+                    language: {
+                        english: "Anglais",
+                        french: "Français"
+                    },
                     auth: {
+                        tagline: "Commencez à gagner de l'argent et développez vos actifs numériques",
                         login: "Connexion",
                         register: "S'inscrire",
                         username: "Nom d'utilisateur",
                         password: "Mot de passe",
                         referralCode: "Code de parrainage (Optionnel)",
+                        noAccount: "Vous n'avez pas de compte ?",
+                        hasAccount: "Vous avez déjà un compte ?",
+                        registerLink: "S'inscrire",
+                        loginLink: "Connexion",
+                        terms: "En utilisant Ghost, vous acceptez nos Conditions d'utilisation et Politique de confidentialité",
+                        logout: "Déconnexion",
                         loginSuccess: "Connexion réussie !",
                         registerSuccess: "Inscription réussie !",
                         logoutSuccess: "Déconnexion réussie",
-                        requiredFields: "Veuillez remplir tous les champs obligatoires",
+                        requiredFields: "Veuillez remplir tous los campos obligatoires",
                         passwordLength: "Le mot de passe doit comporter au moins 6 caractères",
                         loginFailed: "Échec de la connexion. Veuillez réessayer.",
-                        registerFailed: "Échec de l'inscription. Veuillez réessayer."
-                    },
-                    dashboard: {
-                        active: "Actif",
-                        inactive: "Inactif",
-                        startService: "Démarrer le service",
-                        stopService: "Arrêter le service",
-                        points: "Points",
-                        sharedData: "Données partagées",
-                        connectionTime: "Temps de connexion",
-                        withdrawEarnings: "Retirer les gains",
-                        totalEarnings: "Gains totaux",
-                        availablePoints: "Points disponibles",
-                        serviceControl: "Contrôle du service",
-                        backgroundMode: "Mode arrière-plan",
-                        bandwidthLimit: "Limite de bande passante",
-                        withdrawalHistory: "Historique des retraits",
-                        referralProgram: "Programme de parrainage",
-                        yourReferralCode: "Votre code de parrainage",
-                        totalReferrals: "Total des parrainages",
-                        bonusEarned: "Bonus gagnés",
-                        refreshed: "Tableau de bord actualisé !"
+                        registerFailed: "Échec de l'inscription. Veuillez réessayer.",
+                        authFailed: "Échec de l'authentification",
+                        authError: "Une erreur s'est produite lors de l'authentification"
                     }
                 },
                 de: {
+                    siteTitle: "Geist - Bandbreiten-Sharing-Plattform",
+                    language: {
+                        english: "Englisch",
+                        german: "Deutsch"
+                    },
                     auth: {
+                        tagline: "Beginnen Sie Geld zu verdienen und wachsen Sie Ihre digitalen Vermögenswerte",
                         login: "Anmelden",
                         register: "Registrieren",
                         username: "Benutzername",
                         password: "Passwort",
                         referralCode: "Empfehlungscode (Optional)",
+                        noAccount: "Sie haben kein Konto?",
+                        hasAccount: "Sie haben bereits ein Konto?",
+                        registerLink: "Registrieren",
+                        loginLink: "Anmelden",
+                        terms: "Durch die Nutzung von Ghost stimmen Sie unseren Nutzungsbedingungen und Datenschutzrichtlinien zu",
+                        logout: "Abmelden",
                         loginSuccess: "Anmeldung erfolgreich!",
                         registerSuccess: "Registrierung erfolgreich!",
-                        logoutSuccess: "Abmeldung erfolgreich",
+                        logoutSuccess: "Erfolgreich abgemeldet",
                         requiredFields: "Bitte füllen Sie alle erforderlichen Felder aus",
                         passwordLength: "Passwort muss mindestens 6 Zeichen lang sein",
                         loginFailed: "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
-                        registerFailed: "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut."
-                    },
-                    dashboard: {
-                        active: "Aktiv",
-                        inactive: "Inaktiv",
-                        startService: "Dienst starten",
-                        stopService: "Dienst stoppen",
-                        points: "Punkte",
-                        sharedData: "Geteilte Daten",
-                        connectionTime: "Verbindungszeit",
-                        withdrawEarnings: "Gewinne abheben",
-                        totalEarnings: "Gesamtgewinn",
-                        availablePoints: "Verfügbare Punkte",
-                        serviceControl: "Dienststeuerung",
-                        backgroundMode: "Hintergrundmodus",
-                        bandwidthLimit: "Bandbreitenlimit",
-                        withdrawalHistory: "Auszahlungshistorie",
-                        referralProgram: "Empfehlungsprogramm",
-                        yourReferralCode: "Ihr Empfehlungscode",
-                        totalReferrals: "Gesamtempfehlungen",
-                        bonusEarned: "Bonus verdient",
-                        refreshed: "Dashboard aktualisiert!"
+                        registerFailed: "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+                        authFailed: "Authentifizierung fehlgeschlagen",
+                        authError: "Bei der Authentifizierung ist ein Fehler aufgetreten"
                     }
                 }
             },
             
             currentLang: 'en',
             
-            setLanguage(lang) {
-                if (this.translations[lang]) {
-                    this.currentLang = lang;
-                    localStorage.setItem('appLanguage', lang);
-                    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-                    document.documentElement.lang = lang;
-                    this.updatePage();
-                    this.updateButtonText();
-                }
+            init() {
+                const savedLang = localStorage.getItem('ghostAppLanguage') || 'en';
+                this.setLanguage(savedLang);
             },
             
-            t(key) {
+            setLanguage(lang) {
+                if (!this.translations[lang]) {
+                    lang = 'en';
+                }
+                
+                this.currentLang = lang;
+                localStorage.setItem('ghostAppLanguage', lang);
+                
+                // Update HTML direction
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                document.documentElement.lang = lang;
+                
+                // Update page title
+                document.title = this.translations[lang].siteTitle;
+                
+                // Update all translatable elements
+                this.updatePageText();
+                
+                // Update language switcher
+                this.updateLanguageSwitcher(lang);
+                
+                // Update currentLanguage variable for handleAuth
+                window.currentLanguage = lang;
+            },
+            
+            updatePageText() {
+                // Update all elements with data-i18n attribute
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    const translation = this.getTranslation(key);
+                    if (translation) {
+                        element.textContent = translation;
+                    }
+                });
+                
+                // Update all elements with data-i18n-placeholder attribute
+                document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                    const key = element.getAttribute('data-i18n-placeholder');
+                    const translation = this.getTranslation(key);
+                    if (translation) {
+                        element.placeholder = translation;
+                    }
+                });
+            },
+            
+            getTranslation(key) {
                 const keys = key.split('.');
                 let value = this.translations[this.currentLang];
                 
                 for (const k of keys) {
-                    if (value && value[k]) {
+                    if (value && typeof value === 'object' && value[k] !== undefined) {
                         value = value[k];
                     } else {
                         // Fallback to English
-                        let engValue = this.translations.en;
-                        for (const engK of keys) {
-                            if (engValue && engValue[engK]) {
-                                engValue = engValue[engK];
+                        let fallbackValue = this.translations.en;
+                        for (const fallbackK of keys) {
+                            if (fallbackValue && typeof fallbackValue === 'object' && fallbackValue[fallbackK] !== undefined) {
+                                fallbackValue = fallbackValue[fallbackK];
                             } else {
                                 return key;
                             }
                         }
-                        return engValue;
+                        return fallbackValue;
                     }
                 }
                 return value;
             },
             
-            updatePage() {
-                document.querySelectorAll('[data-i18n]').forEach(el => {
-                    const key = el.getAttribute('data-i18n');
-                    el.textContent = this.t(key);
+            updateLanguageSwitcher(lang) {
+                const langNames = {
+                    'en': 'English',
+                    'ar': 'العربية',
+                    'es': 'Español',
+                    'fr': 'Français',
+                    'de': 'Deutsch'
+                };
+                
+                document.getElementById('current-lang-text').textContent = langNames[lang] || 'English';
+                
+                // Update check marks
+                document.querySelectorAll('.lang-option i.fa-check').forEach(check => {
+                    check.style.display = 'none';
                 });
                 
-                // Update placeholders
-                const usernameInput = document.getElementById('username');
-                const passwordInput = document.getElementById('password');
-                const referralInput = document.getElementById('referral-code');
-                
-                if (usernameInput) usernameInput.placeholder = this.t('auth.username');
-                if (passwordInput) passwordInput.placeholder = this.t('auth.password');
-                if (referralInput) referralInput.placeholder = this.t('auth.referralCode');
+                if (lang === 'en') document.getElementById('check-en').style.display = 'inline';
+                if (lang === 'ar') document.getElementById('check-ar').style.display = 'inline';
+                if (lang === 'es') document.getElementById('check-es').style.display = 'inline';
+                if (lang === 'fr') document.getElementById('check-fr').style.display = 'inline';
+                if (lang === 'de') document.getElementById('check-de').style.display = 'inline';
             },
             
-            updateButtonText() {
-                const loginBtn = document.getElementById('login-btn');
-                const registerBtn = document.getElementById('register-btn');
-                const logoutBtn = document.getElementById('logout-btn');
-                
-                if (loginBtn) loginBtn.innerHTML = `<i class="fas fa-sign-in-alt"></i> ${this.t('auth.login')}`;
-                if (registerBtn) registerBtn.innerHTML = `<i class="fas fa-user-plus"></i> ${this.t('auth.register')}`;
-                if (logoutBtn) logoutBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> ${this.t('auth.logout')}`;
+            t(key) {
+                return this.getTranslation(key);
             }
         };
-        
-        // Ghost Application
+
+        // ========== GHOST APPLICATION ==========
         class GhostApp {
             constructor() {
                 this.config = {
@@ -2187,13 +2138,13 @@
                     conversionRate: 0.01,
                     withdrawalFee: 0.02,
                     minWithdrawal: 1000,
-                    maxBandwidth: 50
+                    maxBandwidth: 100
                 };
                 
                 this.state = {
-                    userId: null,
                     username: '',
                     token: '',
+                    userData: null,
                     points: 0,
                     sharedData: 0,
                     connectionTime: 0,
@@ -2204,8 +2155,6 @@
                     bandwidthLimit: 10,
                     walletBalance: 0,
                     totalEarnings: 0,
-                    language: localStorage.getItem('appLanguage') || 'en',
-                    websocket: null,
                     settings: {
                         notifications: true,
                         backgroundMode: true
@@ -2222,32 +2171,36 @@
             
             init() {
                 this.bindEvents();
-                this.initLanguage();
                 this.checkAuth();
-                this.setupAutoSave();
-                this.initResponsive();
+                this.loadSavedState();
             }
             
             bindEvents() {
-                // Auth toggle
-                document.getElementById('show-register')?.addEventListener('click', (e) => {
+                // Login/Register toggle
+                document.getElementById('show-register-link').addEventListener('click', (e) => {
                     e.preventDefault();
-                    document.getElementById('login-btn').style.display = 'none';
-                    document.getElementById('register-btn').style.display = 'block';
-                    document.querySelector('.switch-auth:nth-child(1)').style.display = 'none';
-                    document.querySelector('.switch-auth:nth-child(2)').style.display = 'block';
+                    document.getElementById('login-form').style.display = 'none';
+                    document.getElementById('register-form').style.display = 'block';
                 });
                 
-                document.getElementById('show-login')?.addEventListener('click', (e) => {
+                document.getElementById('show-login-link').addEventListener('click', (e) => {
                     e.preventDefault();
-                    document.getElementById('login-btn').style.display = 'block';
-                    document.getElementById('register-btn').style.display = 'none';
-                    document.querySelector('.switch-auth:nth-child(1)').style.display = 'block';
-                    document.querySelector('.switch-auth:nth-child(2)').style.display = 'none';
+                    document.getElementById('register-form').style.display = 'none';
+                    document.getElementById('login-form').style.display = 'block';
+                });
+                
+                // Login button - using the new handleAuth function
+                document.getElementById('login-btn').addEventListener('click', () => {
+                    handleAuth(true);
+                });
+                
+                // Register button - using the new handleAuth function
+                document.getElementById('register-btn').addEventListener('click', () => {
+                    handleAuth(false);
                 });
                 
                 // Language switcher
-                document.getElementById('lang-btn')?.addEventListener('click', () => {
+                document.getElementById('lang-btn').addEventListener('click', () => {
                     const dropdown = document.getElementById('lang-dropdown');
                     dropdown.classList.toggle('show');
                 });
@@ -2256,10 +2209,7 @@
                     option.addEventListener('click', () => {
                         const lang = option.getAttribute('data-lang');
                         i18n.setLanguage(lang);
-                        this.state.language = lang;
                         document.getElementById('lang-dropdown').classList.remove('show');
-                        document.getElementById('lang-btn').querySelector('span').textContent = 
-                            option.querySelector('span').textContent;
                     });
                 });
                 
@@ -2271,36 +2221,43 @@
                 });
                 
                 // Logout
-                document.getElementById('logout-btn')?.addEventListener('click', () => {
+                document.getElementById('logout-btn').addEventListener('click', () => {
                     localStorage.removeItem('token');
                     localStorage.removeItem('username');
+                    localStorage.removeItem('ghostUserData');
+                    localStorage.removeItem('ghostAppState');
+                    
                     document.getElementById('dashboard').classList.remove('active');
                     document.getElementById('auth-screen').classList.add('active');
                     
-                    // Clear form
-                    document.getElementById('username').value = '';
-                    document.getElementById('password').value = '';
-                    document.getElementById('referral-code').value = '';
+                    // Reset forms
+                    document.getElementById('login-form').style.display = 'block';
+                    document.getElementById('register-form').style.display = 'none';
+                    document.getElementById('login-username').value = '';
+                    document.getElementById('login-password').value = '';
+                    document.getElementById('register-username').value = '';
+                    document.getElementById('register-password').value = '';
+                    document.getElementById('register-referral-code').value = '';
                     
                     alert(i18n.t('auth.logoutSuccess'));
                 });
                 
                 // Service toggle
-                document.getElementById('service-toggle')?.addEventListener('change', (e) => {
+                document.getElementById('service-toggle').addEventListener('change', (e) => {
                     this.state.serviceActive = e.target.checked;
                     this.updateServiceStatus();
+                    this.saveState();
                 });
                 
                 // Bandwidth slider
                 const bandwidthSlider = document.getElementById('bandwidth-limit');
                 const limitValue = document.getElementById('limit-value');
                 
-                if (bandwidthSlider && limitValue) {
-                    bandwidthSlider.addEventListener('input', (e) => {
-                        this.state.bandwidthLimit = parseInt(e.target.value);
-                        limitValue.textContent = `${this.state.bandwidthLimit} GB`;
-                    });
-                }
+                bandwidthSlider.addEventListener('input', (e) => {
+                    this.state.bandwidthLimit = parseInt(e.target.value);
+                    limitValue.textContent = `${this.state.bandwidthLimit} GB`;
+                    this.saveState();
+                });
                 
                 // Quick withdrawal buttons
                 document.querySelectorAll('.withdraw-action-btn').forEach(btn => {
@@ -2315,17 +2272,17 @@
                 });
                 
                 // Withdrawal amount input
-                document.getElementById('withdrawal-amount')?.addEventListener('input', () => {
+                document.getElementById('withdrawal-amount').addEventListener('input', () => {
                     this.updateWithdrawalValue();
                 });
                 
                 // Withdraw button
-                document.getElementById('withdraw-btn')?.addEventListener('click', () => {
-                    this.processWithdrawal();
+                document.getElementById('withdraw-btn').addEventListener('click', async () => {
+                    await this.processWithdrawal();
                 });
                 
                 // Copy referral code
-                document.getElementById('copy-referral-code')?.addEventListener('click', () => {
+                document.getElementById('copy-referral-code').addEventListener('click', () => {
                     const code = document.getElementById('user-referral-code').textContent;
                     navigator.clipboard.writeText(code).then(() => {
                         alert(i18n.t('referral.copied'));
@@ -2335,47 +2292,52 @@
                 });
                 
                 // Refresh points
-                document.getElementById('refresh-points')?.addEventListener('click', () => {
+                document.getElementById('refresh-points').addEventListener('click', () => {
                     this.loadDashboardData();
                 });
                 
                 // Refresh dashboard
-                document.getElementById('refresh-btn')?.addEventListener('click', () => {
+                document.getElementById('refresh-btn').addEventListener('click', () => {
                     this.loadDashboardData();
                     alert(i18n.t('dashboard.refreshed'));
                 });
-            }
-            
-            initLanguage() {
-                const savedLang = localStorage.getItem('appLanguage') || 'en';
-                i18n.setLanguage(savedLang);
                 
-                // Update language button text
-                const langNames = {
-                    'en': 'English',
-                    'ar': 'العربية',
-                    'es': 'Español',
-                    'fr': 'Français',
-                    'de': 'Deutsch'
-                };
+                // Payment method selection
+                document.querySelectorAll('.method-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        document.querySelectorAll('.method-card').forEach(c => c.classList.remove('active'));
+                        card.classList.add('active');
+                        this.withdrawalState.selectedMethod = card.getAttribute('data-method');
+                    });
+                });
                 
-                const langBtn = document.getElementById('lang-btn');
-                if (langBtn) {
-                    const span = langBtn.querySelector('span');
-                    if (span) {
-                        span.textContent = langNames[savedLang] || 'English';
-                    }
-                }
+                // History filters
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        const filter = btn.getAttribute('data-filter');
+                        this.filterWithdrawalHistory(filter);
+                    });
+                });
             }
             
             checkAuth() {
                 const token = localStorage.getItem('token');
                 const username = localStorage.getItem('username');
+                const userData = localStorage.getItem('ghostUserData');
                 
                 if (token && username) {
                     this.state.token = token;
                     this.state.username = username;
-                    this.state.userId = username;
+                    
+                    if (userData) {
+                        try {
+                            this.state.userData = JSON.parse(userData);
+                        } catch (e) {
+                            console.error('Error parsing user data:', e);
+                        }
+                    }
                     
                     // Switch to dashboard
                     document.getElementById('auth-screen').classList.remove('active');
@@ -2389,20 +2351,59 @@
                 }
             }
             
-            loadDashboardData() {
-                // Simulate API call
-                setTimeout(() => {
-                    // Generate random data for demo
-                    this.state.points = Math.floor(Math.random() * 10000) + 1000;
-                    this.state.sharedData = (Math.random() * 50).toFixed(1);
-                    this.state.connectionTime = Math.floor(Math.random() * 100);
-                    this.state.walletBalance = (this.state.points * this.config.conversionRate).toFixed(2);
-                    this.state.totalEarnings = (this.state.points * this.config.conversionRate * 1.5).toFixed(2);
-                    this.state.referrals = Math.floor(Math.random() * 20);
+            async loadDashboardData() {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+                
+                try {
+                    // Load user stats from API using Fetch
+                    const response = await fetch('/api/user/stats', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
                     
-                    // Update UI
-                    this.updateDashboardUI();
-                }, 500);
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        // Update state with real data
+                        this.state.points = data.points || 0;
+                        this.state.sharedData = data.sharedData || 0;
+                        this.state.connectionTime = data.connectionTime || 0;
+                        this.state.walletBalance = data.walletBalance || 0;
+                        this.state.totalEarnings = data.totalEarnings || 0;
+                        this.state.referrals = data.referrals || 0;
+                        this.state.level = data.level || 1;
+                        this.state.referralCode = data.referralCode || 'GHOST' + Math.floor(Math.random() * 1000);
+                        
+                        // Update UI
+                        this.updateDashboardUI();
+                        
+                        // Load withdrawal history
+                        await this.loadWithdrawalHistory();
+                    } else {
+                        console.error('Failed to load dashboard data');
+                        // Fallback to demo data
+                        this.useDemoData();
+                    }
+                } catch (error) {
+                    console.error('Error loading dashboard data:', error);
+                    this.useDemoData();
+                }
+            }
+            
+            useDemoData() {
+                this.state.points = Math.floor(Math.random() * 10000) + 1000;
+                this.state.sharedData = (Math.random() * 50).toFixed(1);
+                this.state.connectionTime = Math.floor(Math.random() * 100);
+                this.state.walletBalance = (this.state.points * this.config.conversionRate).toFixed(2);
+                this.state.totalEarnings = (this.state.points * this.config.conversionRate * 1.5).toFixed(2);
+                this.state.referrals = Math.floor(Math.random() * 20);
+                this.state.referralCode = 'GHOST' + Math.floor(Math.random() * 1000);
+                
+                this.updateDashboardUI();
             }
             
             updateDashboardUI() {
@@ -2423,10 +2424,16 @@
                 document.getElementById('total-earnings').textContent = `$${this.state.totalEarnings}`;
                 document.getElementById('available-points').textContent = this.state.points.toLocaleString();
                 
+                // Level
+                document.getElementById('level-value').textContent = this.state.level;
+                
                 // Referrals
                 document.getElementById('total-referrals').textContent = this.state.referrals;
                 document.getElementById('total-referrals-count').textContent = this.state.referrals;
                 document.getElementById('referral-bonus').textContent = `${(this.state.referrals * 500).toLocaleString()} pts`;
+                
+                // Referral code
+                document.getElementById('user-referral-code').textContent = this.state.referralCode;
                 
                 // Points per hour
                 const pointsPerHour = Math.floor(Math.random() * 20) + 5;
@@ -2460,20 +2467,12 @@
             
             updateWithdrawalValue() {
                 const input = document.getElementById('withdrawal-amount');
-                if (!input) return;
-                
                 const points = parseInt(input.value) || 0;
                 const value = (points * this.config.conversionRate).toFixed(2);
                 document.getElementById('withdrawal-value').textContent = `$${value}`;
-                
-                // Update modal conversion if open
-                const modalConversion = document.getElementById('modal-conversion');
-                if (modalConversion) {
-                    modalConversion.textContent = `$${value}`;
-                }
             }
             
-            processWithdrawal() {
+            async processWithdrawal() {
                 const input = document.getElementById('withdrawal-amount');
                 const points = parseInt(input.value) || 0;
                 
@@ -2487,32 +2486,71 @@
                     return;
                 }
                 
-                // Show success modal
-                document.getElementById('success-modal').style.display = 'block';
+                const token = localStorage.getItem('token');
+                if (!token) return;
                 
-                // Update success modal details
-                document.getElementById('success-amount').textContent = `${points.toLocaleString()} points`;
-                
-                // Generate random request ID
-                const requestId = '#WD' + Math.floor(Math.random() * 1000000);
-                document.getElementById('success-request-id').textContent = requestId;
-                
-                // Add to history
-                this.addToWithdrawalHistory({
-                    id: requestId,
-                    points: points,
-                    value: (points * this.config.conversionRate).toFixed(2),
-                    method: 'paypal',
-                    status: 'pending',
-                    date: new Date().toLocaleDateString()
-                });
-                
-                // Close modal handler
-                document.querySelectorAll('.close-success-modal').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        document.getElementById('success-modal').style.display = 'none';
+                try {
+                    const response = await fetch('/api/withdrawal/request', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            points: points,
+                            method: this.withdrawalState.selectedMethod,
+                            amount: points * this.config.conversionRate
+                        })
                     });
-                });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        // Add to history
+                        this.addToWithdrawalHistory({
+                            id: data.requestId || '#WD' + Math.floor(Math.random() * 1000000),
+                            points: points,
+                            value: (points * this.config.conversionRate).toFixed(2),
+                            method: this.withdrawalState.selectedMethod,
+                            status: 'pending',
+                            date: new Date().toLocaleDateString()
+                        });
+                        
+                        // Update points
+                        this.state.points -= points;
+                        this.updateDashboardUI();
+                        
+                        alert('Withdrawal request submitted successfully!');
+                    } else {
+                        alert('Withdrawal request failed');
+                    }
+                } catch (error) {
+                    console.error('Withdrawal error:', error);
+                    alert('Server connection failed');
+                }
+            }
+            
+            async loadWithdrawalHistory() {
+                const token = localStorage.getItem('token');
+                if (!token) return;
+                
+                try {
+                    const response = await fetch('/api/withdrawal/history', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.withdrawalState.withdrawalHistory = data || [];
+                        this.updateWithdrawalHistory();
+                    }
+                } catch (error) {
+                    console.error('Error loading withdrawal history:', error);
+                }
             }
             
             addToWithdrawalHistory(withdrawal) {
@@ -2525,7 +2563,7 @@
                 if (!container) return;
                 
                 if (this.withdrawalState.withdrawalHistory.length === 0) {
-                    container.innerHTML = '<div class="empty-history">' + i18n.t('withdrawal.noHistory') + '</div>';
+                    container.innerHTML = '<div class="empty-history">' + i18n.t('history.empty') + '</div>';
                     return;
                 }
                 
@@ -2536,17 +2574,17 @@
                     div.className = 'withdrawal-item';
                     
                     let statusClass = 'status-pending';
-                    let statusText = i18n.t('withdrawal.pending');
+                    let statusText = i18n.t('modal.pending');
                     
                     if (item.status === 'completed') {
                         statusClass = 'status-completed';
-                        statusText = i18n.t('withdrawal.completed');
+                        statusText = 'Completed';
                     } else if (item.status === 'processing') {
                         statusClass = 'status-processing';
-                        statusText = i18n.t('withdrawal.processing');
+                        statusText = 'Processing';
                     } else if (item.status === 'failed') {
                         statusClass = 'status-failed';
-                        statusText = i18n.t('withdrawal.failed');
+                        statusText = 'Failed';
                     }
                     
                     div.innerHTML = `
@@ -2571,94 +2609,93 @@
                 });
             }
             
-            setupAutoSave() {
-                // Auto-save state every 30 seconds
-                setInterval(() => {
-                    if (this.state.username) {
-                        localStorage.setItem('ghostAppState', JSON.stringify(this.state));
-                    }
-                }, 30000);
+            filterWithdrawalHistory(filter) {
+                const container = document.getElementById('withdrawal-history');
+                if (!container) return;
                 
-                // Load saved state
+                const items = container.querySelectorAll('.withdrawal-item');
+                items.forEach(item => {
+                    const statusElement = item.querySelector('.withdrawal-status span');
+                    const status = statusElement.className.includes('pending') ? 'pending' :
+                                  statusElement.className.includes('completed') ? 'completed' :
+                                  statusElement.className.includes('processing') ? 'processing' :
+                                  statusElement.className.includes('failed') ? 'failed' : 'all';
+                    
+                    if (filter === 'all' || status === filter) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+            
+            loadSavedState() {
                 const savedState = localStorage.getItem('ghostAppState');
                 if (savedState) {
                     try {
                         const parsed = JSON.parse(savedState);
-                        // Merge with current state
-                        Object.assign(this.state, parsed);
+                        this.state.serviceActive = parsed.serviceActive || false;
+                        this.state.bandwidthLimit = parsed.bandwidthLimit || 10;
+                        
+                        // Update UI
+                        const serviceToggle = document.getElementById('service-toggle');
+                        const bandwidthSlider = document.getElementById('bandwidth-limit');
+                        const backgroundToggle = document.getElementById('background-mode-toggle');
+                        
+                        if (serviceToggle) serviceToggle.checked = this.state.serviceActive;
+                        if (bandwidthSlider) {
+                            bandwidthSlider.value = this.state.bandwidthLimit;
+                            document.getElementById('limit-value').textContent = `${this.state.bandwidthLimit} GB`;
+                        }
+                        if (backgroundToggle) backgroundToggle.checked = parsed.settings?.backgroundMode || true;
+                        
+                        this.updateServiceStatus();
                     } catch (e) {
                         console.error('Failed to load saved state:', e);
                     }
                 }
             }
             
-            initResponsive() {
-                // Handle window resize
-                window.addEventListener('resize', this.handleResize.bind(this));
-                this.handleResize();
-            }
-            
-            handleResize() {
-                const screenWidth = window.innerWidth;
-                const languageSwitcher = document.querySelector('.language-switcher');
-                
-                if (screenWidth <= 768) {
-                    // Mobile adjustments
-                    if (languageSwitcher) {
-                        languageSwitcher.style.position = 'static';
-                        languageSwitcher.style.margin = '0 auto 20px';
-                        languageSwitcher.style.display = 'flex';
-                        languageSwitcher.style.justifyContent = 'center';
+            saveState() {
+                localStorage.setItem('ghostAppState', JSON.stringify({
+                    serviceActive: this.state.serviceActive,
+                    bandwidthLimit: this.state.bandwidthLimit,
+                    settings: {
+                        backgroundMode: document.getElementById('background-mode-toggle')?.checked || true
                     }
-                } else {
-                    // Desktop adjustments
-                    if (languageSwitcher) {
-                        languageSwitcher.style.position = 'fixed';
-                        languageSwitcher.style.top = '20px';
-                        languageSwitcher.style.right = '20px';
-                        languageSwitcher.style.margin = '0';
-                        languageSwitcher.style.display = 'block';
-                    }
-                }
+                }));
             }
         }
-        
-        // Initialize the app when DOM is loaded
+
+        // ========== INITIALIZE EVERYTHING ==========
         document.addEventListener('DOMContentLoaded', () => {
-            window.app = new GhostApp();
+            // Initialize i18n
+            i18n.init();
             
-            // Initialize auth form switch
-            const showRegister = document.getElementById('show-register');
-            const showLogin = document.getElementById('show-login');
+            // Initialize the app
+            window.ghostApp = new GhostApp();async function handleAuth(is){const u=is?document.getElementById("login-username")?.value:document.getElementById("register-username")?.value;const p=is?document.getElementById("login-password")?.value:document.getElementById("register-password")?.value;if(!u||!p){alert("Fill fields");return}try{const r=await fetch(is?"/api/auth/login":"/api/auth/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:u,password:p})});const d=await r.json();if(r.ok){localStorage.setItem("token",d.token); alert("Success!"); document.getElementById("auth-screen").style.display="none"; document.getElementById("main-screen").style.display="block"; location.reload();}else{alert(d.error)}}catch(e){alert("Error")}} document.addEventListener("DOMContentLoaded",()=>{const b1=document.getElementById("login-btn"),b2=document.getElementById("register-btn");if(b1)b1.onclick=()=>handleAuth(true);if(b2)b2.onclick=()=>handleAuth(false)});
             
-            if (showRegister) {
-                showRegister.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.getElementById('login-btn').style.display = 'none';
-                    document.getElementById('register-btn').style.display = 'block';
-                    document.querySelector('.switch-auth:nth-child(1)').style.display = 'none';
-                    document.querySelector('.switch-auth:nth-child(2)').style.display = 'block';
-                });
-            }
+            // Set initial language for handleAuth
+            window.currentLanguage = i18n.currentLang;
             
-            if (showLogin) {
-                showLogin.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.getElementById('login-btn').style.display = 'block';
-                    document.getElementById('register-btn').style.display = 'none';
-                    document.querySelector('.switch-auth:nth-child(1)').style.display = 'block';
-                    document.querySelector('.switch-auth:nth-child(2)').style.display = 'none';
-                });
-            }
-            
-            // Close modals when clicking outside
+            // Close language dropdown when clicking outside
             window.addEventListener('click', (e) => {
-                const modals = document.querySelectorAll('.modal');
-                modals.forEach(modal => {
-                    if (e.target === modal) {
-                        modal.style.display = 'none';
-                    }
-                });
+                if (!e.target.closest('.language-switcher')) {
+                    document.getElementById('lang-dropdown').classList.remove('show');
+                }
+            });
+            
+            // Handle Enter key in forms
+            document.getElementById('login-password')?.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleAuth(true);
+                }
+            });
+            
+            document.getElementById('register-password')?.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleAuth(false);
+                }
             });
         });
     </script>
