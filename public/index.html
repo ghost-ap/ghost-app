@@ -477,16 +477,30 @@
                     <p>≈ $<span id="points-value">0.00</span></p>
                 </div>
                 
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div>Shared Data</div>
-                        <div class="stat-value" id="shared-data">0 GB</div>
-                    </div>
-                    <div class="stat-item">
-                        <div>Connection Time</div>
-                        <div class="stat-value" id="connection-time">0h 0m</div>
+                <div class="card" style="border: 1px solid #333; background: #111; border-radius: 24px; padding: 25px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <div class="card-header" style="justify-content: center; margin-bottom: 15px;">
+                    <h3 style="color: #00ff88; font-size: 1.4rem;"><i class="fas fa-rocket"></i> Spread the Word</h3>
+                </div>
+
+                <p style="color: #aaa; font-size: 0.95rem; margin-bottom: 25px;">Share GHOST with your friends and help them start earning too!</p>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                    <a id="share-whatsapp" href="#" target="_blank" style="text-decoration: none; background: #25D366; color: white; padding: 15px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                        <i class="fab fa-whatsapp" style="font-size: 1.8rem;"></i>
+                        <span style="font-size: 0.75rem; font-weight: bold;">WhatsApp</span>
+                    </a>
+
+                    <a id="share-telegram" href="#" target="_blank" style="text-decoration: none; background: #0088cc; color: white; padding: 15px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                        <i class="fab fa-telegram-plane" style="font-size: 1.8rem;"></i>
+                        <span style="font-size: 0.75rem; font-weight: bold;">Telegram</span>
+                    </a>
+
+                    <div onclick="copyAppLink()" style="background: #333; color: white; padding: 15px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;">
+                        <i class="fas fa-link" style="font-size: 1.8rem;"></i>
+                        <span style="font-size: 0.75rem; font-weight: bold;">Copy Link</span>
                     </div>
                 </div>
+            </div>
             </div>
             
             <!-- Service Control Card -->
@@ -546,15 +560,7 @@
                 </div>
             </div>
                 
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div>Total Referrals</div>
-                        <div class="stat-value" id="total-referrals">0</div>
-                    </div>
-                    <div class="stat-item">
-                        <div>Bonus Earned</div>
-                        <div class="stat-value" id="referral-bonus">0 pts</div>
-                    </div>
+                
                 </div>
             </div>
         </div>
@@ -603,7 +609,7 @@
             document.getElementById('refresh-dashboard').addEventListener('click', loadDashboardData);
             document.getElementById('refresh-points').addEventListener('click', loadDashboardData);
             document.getElementById('withdraw-btn').addEventListener('click', processWithdrawal);
-            document.getElementById('copy-referral').addEventListener('click', copyReferralCode);
+            
             
             // Service toggle
             document.getElementById('service-toggle').addEventListener('change', toggleService);
@@ -878,63 +884,57 @@
         
         // Process withdrawal
         async function processWithdrawal() {
-            if (!authToken) return;
-            
-            const pointsInput = document.getElementById('withdrawal-amount');
-            const points = parseInt(pointsInput.value);
-            
-            if (!points || points < 2000) {
-                alert('Minimum withdrawal is 1000 points ($10)');
-                return;
-            }
-            
-            if (!confirm(`Withdraw ${points} points ($${(points * 0.01).toFixed(2)})?`)) {
-                return;
-            }
-            
-            try {
-                const response = await fetch('/api/withdrawal/request', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + authToken,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        points: points,
-                        method: 'paypal'
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    alert(`Withdrawal request submitted!\nRequest ID: ${data.requestId}`);
-                    pointsInput.value = '';
-                    loadDashboardData();
-                } else {
-                    alert(data.error || 'Withdrawal failed');
-                }
-            } catch (error) {
-                console.error('Withdrawal error:', error);
-                alert('Connection error. Please try again.');
-            }
-        }
+    if (!authToken) return;
+    
+    const pointsInput = document.getElementById('withdrawal-amount');
+    const points = parseInt(pointsInput.value);
+    const method = document.getElementById('payout-method').value;
+    const name = document.getElementById('payout-name').value;
+    const phone = document.getElementById('payout-phone').value;
+    const email = document.getElementById('payout-email').value;
+
+    if (!points || points < 2000) {
+        alert('Minimum withdrawal is 2000 points ($20)');
+        return;
+    }
+
+    if (!name || !phone) {
+        alert('Please enter your Full Name and Phone Number');
+        return;
+    }
+    
+    if (!confirm(`Confirm withdrawal of ${points} points ($${(points * 0.01).toFixed(2)}) via ${method}?`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/withdrawal/request', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + authToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                points: points,
+                method: method,
+                details: { fullName: name, phone: phone, email: email }
+            })
+        });
         
-        // Copy referral code
-        function copyReferralCode() {
-            const codeInput = document.getElementById('referral-code');
-            codeInput.select();
-            codeInput.setSelectionRange(0, 99999);
-            
-            try {
-                navigator.clipboard.writeText(codeInput.value);
-                alert('Referral code copied to clipboard!');
-            } catch (err) {
-                // Fallback for older browsers
-                document.execCommand('copy');
-                alert('Referral code copied!');
-            }
+        const data = await response.json();
+        if (data.success) {
+            alert(`Success! Request ID: ${data.requestId}`);
+            pointsInput.value = ''; // تفريغ الخانة
+            loadDashboardData();
+        } else {
+            alert(data.error || 'Withdrawal failed');
         }
+    } catch (error) {
+        alert('Connection error. Try again later.');
+    }
+}
+        
+       
         
         // Connect WebSocket
         function connectWebSocket() {
@@ -981,6 +981,23 @@
                 loadDashboardData();
             }
         }, 30000);
+
+        // دالة نسخ الرابط وتحديث روابط المشاركة
+function updateShareLinks() {
+    const appUrl = window.location.origin; // سيأخذ رابط موقعك تلقائياً
+    const shareText = `Check out GHOST! Start earning money by sharing your internet. Join here: ${appUrl}`;
+
+    document.getElementById('share-whatsapp').href = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+    document.getElementById('share-telegram').href = `https://t.me/share/url?url=${encodeURIComponent(appUrl)}&text=${encodeURIComponent(shareText)}`;
+}
+
+function copyAppLink() {
+    navigator.clipboard.writeText(window.location.origin);
+    alert('App link copied! Share it with everyone 🚀');
+}
+
+// تشغيل التحديث فور تحميل الصفحة
+window.addEventListener('DOMContentLoaded', updateShareLinks);
     </script>
 </body>
 </html>
