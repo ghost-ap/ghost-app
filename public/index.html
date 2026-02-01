@@ -818,7 +818,20 @@
         }
         
         // Update dashboard UI
-        function updateDashboardUI(data) {
+        // Service status
+const statusText = document.getElementById('service-status-text');
+const statusDot = document.querySelector('.status-dot');
+
+if (data.isSharing) {
+    statusText.textContent = 'Active';
+    statusDot.style.backgroundColor = '#00ff00';
+    statusDot.style.boxShadow = '0 0 10px #00ff00';
+} else {
+    statusText.textContent = 'Inactive';
+    statusDot.style.backgroundColor = '#ff0000';
+    statusDot.style.boxShadow = '0 0 10px #ff0000';
+}
+// قمنا بإزالة سطر serviceToggle.checked = data.isSharing من هنا لمنع الارتداد {
             // Points (25% of actual points)
             document.getElementById('total-points').textContent = data.points.toLocaleString();
             document.getElementById('points-value').textContent = (data.points * 0.01).toFixed(2);
@@ -858,44 +871,57 @@
         }
         
         // Toggle service
-        async function toggleService() {
-            if (!authToken) return;
-            
-            const isSharing = document.getElementById('service-toggle').checked;
-            
-            try {
-                const response = await fetch('/api/user/update-sharing', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + authToken,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        isSharing: isSharing,
-                        sharedData: isSharing ? 0.1 : 0,
-                        connectionTime: isSharing ? 1 : 0
-                    })
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    updateDashboardUI(data);
-                    
-                    // Start Bright Data SDK if service is active
-                    if (isSharing && window.BrightSDK) {
-                        try {
-                            window.BrightSDK.start('agnel9t7jrcjh4hx1vofs1qepxynstng');
-                            console.log('Bright Data SDK started');
-                        } catch (e) {
-                            console.error('Bright SDK error:', e);
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error('Failed to update sharing status:', error);
-                document.getElementById('service-toggle').checked = !isSharing;
-            }
+       async function toggleService() {
+    if (!authToken) return;
+    
+    const serviceToggle = document.getElementById('service-toggle');
+    const isSharing = serviceToggle.checked; // الحالة الجديدة التي اختارها المستخدم
+    
+    // تغيير الواجهة فوراً قبل انتظار السيرفر لمنع الارتداد
+    const statusText = document.getElementById('service-status-text');
+    const statusDot = document.querySelector('.status-dot');
+    
+    if (isSharing) {
+        statusText.textContent = 'Active';
+        statusDot.style.backgroundColor = '#00ff00';
+    } else {
+        statusText.textContent = 'Inactive';
+        statusDot.style.backgroundColor = '#ff0000';
+    }
+
+    try {
+        const response = await fetch('/api/user/update-sharing', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + authToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                isSharing: isSharing,
+                // إذا كان إطفاء، نرسل القيم صفر
+                sharedData: isSharing ? 0.1 : 0, 
+                connectionTime: isSharing ? 1 : 0
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Server error');
         }
+        if (!isSharing && window.BrightSDK) {
+    window.BrightSDK.stop(); // إيقاف احتساب المال والبيانات فوراً
+}
+        
+        const data = await response.json();
+        // تحديث الواجهة بالبيانات المؤكدة من السيرفر
+        updateDashboardUI(data);
+
+    } catch (error) {
+        console.error('Failed to update sharing status:', error);
+        // في حال فشل الاتصال فقط، نعيد الزر لحالته السابقة
+        serviceToggle.checked = !isSharing;
+        alert('Connection error. Please try again.');
+    }
+}
         
         // Process withdrawal
         async function processWithdrawal() {
