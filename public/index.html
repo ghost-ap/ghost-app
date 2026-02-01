@@ -913,14 +913,42 @@ if (data.isSharing) {
         
         const data = await response.json();
         // تحديث الواجهة بالبيانات المؤكدة من السيرفر
-        updateDashboardUI(data);
-
-    } catch (error) {
-        console.error('Failed to update sharing status:', error);
-        // في حال فشل الاتصال فقط، نعيد الزر لحالته السابقة
-        serviceToggle.checked = !isSharing;
-        alert('Connection error. Please try again.');
-    }
+        // Update dashboard UI
+        function updateDashboardUI(data) {
+            // Points
+            document.getElementById('total-points').textContent = data.points.toLocaleString();
+            document.getElementById('points-value').textContent = (data.points * 0.01).toFixed(2);
+            
+            // User info
+            document.getElementById('dashboard-username').textContent = data.username;
+            
+            // Service status
+            const statusText = document.getElementById('service-status-text');
+            const statusDot = document.querySelector('.status-dot');
+            const serviceToggle = document.getElementById('service-toggle');
+            
+            if (data.isSharing) {
+                statusText.textContent = 'Active';
+                statusDot.style.backgroundColor = '#00ff00';
+                statusDot.style.boxShadow = '0 0 10px #00ff00';
+                serviceToggle.checked = true;
+            } else {
+                statusText.textContent = 'Inactive';
+                statusDot.style.backgroundColor = '#ff0000';
+                statusDot.style.boxShadow = '0 0 10px #ff0000';
+                serviceToggle.checked = false;
+            }
+            
+            // Shared data and connection time
+            document.getElementById('shared-data').textContent = data.sharedData.toFixed(1) + ' GB';
+            
+            const hours = Math.floor(data.connectionTime / 60);
+            const minutes = data.connectionTime % 60;
+            const connectionTimeElement = document.getElementById('connection-time');
+            if(connectionTimeElement) {
+                connectionTimeElement.textContent = `${hours}h ${minutes}m`;
+            }
+        }
 }
         
         // Process withdrawal
