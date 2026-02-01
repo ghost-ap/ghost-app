@@ -10,7 +10,7 @@ const { Server } = require('socket.io');
 const path = require('path');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto'); const uuidv4 = () => crypto.randomUUID();
 
 const app = express();
 const server = http.createServer(app);
@@ -126,9 +126,9 @@ app.post('/api/auth/register', async (req, res) => {
         // إنشاء المستخدم
         const user = new User({
             username,
-            password: hashedPassword,
-            referralCode: userReferralCode
-        });
+                password: hashedPassword,
+                referralCode: userReferralCode
+            });
         
         // إذا كان هناك كود إحالة
         if (referralCode && referralCode.trim() !== '') {
@@ -159,15 +159,15 @@ app.post('/api/auth/register', async (req, res) => {
             success: true,
             message: "تم إنشاء الحساب بنجاح",
             token,
-            username: user.username,
-            referralCode: user.referralCode
-        });
+                username: user.username,
+                referralCode: user.referralCode
+            });
         
-    } catch (error) {
+            } catch (error) {
         console.error('Registration error:', error);
         res.status(500).json({ error: "خطأ في السيرفر" });
-    }
-});
+            }
+            });
 
 // 2. تسجيل الدخول
 app.post('/api/auth/login', async (req, res) => {
@@ -184,17 +184,17 @@ app.post('/api/auth/login', async (req, res) => {
             const token = jwt.sign(
                 { username, isAdmin: true },
                 JWT_SECRET,
-                { expiresIn: '30d' }
+                    { expiresIn: '30d' }
             );
             return res.json({
-                success: true,
+                        success: true,
                 token,
-                isAdmin: true,
+                        isAdmin: true,
                 username,
-                points: 0,
-                referralCode: "ADMIN"
-            });
-        }
+                        points: 0,
+                        referralCode: "ADMIN"
+                });
+                }
         
         // البحث عن المستخدم
         const user = await User.findOne({ username });
@@ -225,23 +225,23 @@ app.post('/api/auth/login', async (req, res) => {
         res.json({
             success: true,
             token,
-            username: user.username,
-            points: displayPoints, // نقاط معروضة
-            actualPoints: user.actualPoints, // نقاط حقيقية (للاستخدام الداخلي)
-            referralCode: user.referralCode,
-            isSharing: user.isSharing,
-            level: user.level,
-            sharedData: user.sharedData,
-            connectionTime: user.connectionTime,
-            totalReferrals: user.totalReferrals,
-            referralBonus: Math.floor(user.referralBonus * 0.25) // مكافأة إحالة معروضة
-        });
+                username: user.username,
+                points: displayPoints, // نقاط معروضة
+                actualPoints: user.actualPoints, // نقاط حقيقية (للاستخدام الداخلي)
+                referralCode: user.referralCode,
+                isSharing: user.isSharing,
+                level: user.level,
+                sharedData: user.sharedData,
+                connectionTime: user.connectionTime,
+                totalReferrals: user.totalReferrals,
+                referralBonus: Math.floor(user.referralBonus * 0.25) // مكافأة إحالة معروضة
+            });
         
-    } catch (error) {
+            } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ error: "خطأ في السيرفر" });
-    }
-});
+            }
+            });
 
 // 3. جلب بيانات المستخدم
 app.get('/api/user/status', async (req, res) => {
@@ -497,11 +497,11 @@ app.post('/api/user/update-points', async (req, res) => {
             displayPoints: displayPoints
         });
         
-    } catch (error) {
+        } catch (error) {
         console.error('Update points error:', error);
         res.status(500).json({ error: "خطأ في السيرفر" });
-    }
-});
+        }
+        });
 
 // 8. صفحة الإحصائيات للمدير
 app.get('/api/admin/stats', async (req, res) => {
@@ -521,7 +521,7 @@ app.get('/api/admin/stats', async (req, res) => {
         
         const totalUsers = await User.countDocuments();
         const totalActualPoints = await User.aggregate([
-            { $group: { _id: null, total: { $sum: "$actualPoints" } } }
+        { $group: { _id: null, total: { $sum: "$actualPoints" } } }
         ]);
         
         const totalDisplayPoints = Math.floor((totalActualPoints[0]?.total || 0) * 0.25);
@@ -530,21 +530,21 @@ app.get('/api/admin/stats', async (req, res) => {
         res.json({
             success: true,
             totalUsers,
-            totalActualPoints: totalActualPoints[0]?.total || 0,
+                totalActualPoints: totalActualPoints[0]?.total || 0,
             totalDisplayPoints,
             totalWithdrawals
-        });
+            });
         
-    } catch (error) {
+            } catch (error) {
         console.error('Admin stats error:', error);
         res.status(500).json({ error: "خطأ في السيرفر" });
-    }
-});
+            }
+            });
 
 // 9. مسار الصفحة الرئيسية
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+            });
 
 // تشغيل السيرفر
 server.listen(PORT, () => {
@@ -553,7 +553,7 @@ server.listen(PORT, () => {
     console.log(`👑 Admin: ${ADMIN_USERNAME}`);
     console.log(`🔗 Web Interface: http://localhost:${PORT}`);
     console.log('==============================================');
-});
+            });
 
 // إدارة اتصالات Socket.io لمشاركة البيانات
 io.on('connection', (socket) => {
@@ -594,7 +594,7 @@ io.on('connection', (socket) => {
                             connectionTime: user.connectionTime
                         });
                     }
-                }, 60000); // كل دقيقة
+                }, 10000); // كل 10 ثواني
             }
         } catch (error) {
             console.error('Socket sharing error:', error);
