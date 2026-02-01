@@ -466,28 +466,13 @@
             <!-- Points Card -->
             <div class="card">
                 <div class="card-header">
-                    <div class="stats-grid">
-    <div class="stat-item" style="background: rgba(0, 255, 0, 0.05); border: 1px solid rgba(0, 255, 0, 0.1); border-radius: 12px; padding: 15px;">
-        <div style="font-size: 0.8rem; color: #888;">Shared Data</div>
-        <div class="stat-value" id="shared-data" style="color: var(--primary-color); font-weight: bold; font-size: 1.2rem;">0.0 GB</div>
-    </div>
-    <div class="stat-item" style="background: rgba(0, 255, 0, 0.05); border: 1px solid rgba(0, 255, 0, 0.1); border-radius: 12px; padding: 15px;">
-        <div style="font-size: 0.8rem; color: #888;">Uptime</div>
-        <div class="stat-value" id="connection-time" style="color: var(--primary-color); font-weight: bold; font-size: 1.2rem;">0h 0m</div>
-    </div>
-</div>
+                    
                     <h3><i class="fas fa-coins"></i> Your Points</h3>
                     <button class="header-btn" id="refresh-points">
                         <i class="fas fa-redo"></i>
                     </button>
                 </div>
                 
-               
-    <div class="stat-item">
-        <div style="font-size: 0.8rem; color: #888;">Uptime</div>
-        <div class="stat-value" id="connection-time">0h 0m</div>
-    </div>
-</div>
                 <div class="points-display">
                     <div class="points-value" id="total-points">0</div>
                     <p>≈ $<span id="points-value">0.00</span></p>
@@ -858,54 +843,44 @@
         }
         
         // Toggle service
-       async function toggleService() {
-    if (!authToken) return;
-    
-    const serviceToggle = document.getElementById('service-toggle');
-    const isSharing = serviceToggle.checked; // الحالة الجديدة التي اختارها المستخدم
-    
-    // تغيير الواجهة فوراً قبل انتظار السيرفر لمنع الارتداد
-    const statusText = document.getElementById('service-status-text');
-    const statusDot = document.querySelector('.status-dot');
-    
-    if (isSharing) {
-        statusText.textContent = 'Active';
-        statusDot.style.backgroundColor = '#00ff00';
-    } else {
-        statusText.textContent = 'Inactive';
-        statusDot.style.backgroundColor = '#ff0000';
-    }
-
-    try {
-        const response = await fetch('/api/user/update-sharing', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                isSharing: isSharing,
-                // إذا كان إطفاء، نرسل القيم صفر
-                sharedData: isSharing ? 0.1 : 0, 
-                connectionTime: isSharing ? 1 : 0
-            })
-        });
-        
-        if (!response.ok) {
-            throw new Error('Server error');
+        async function toggleService() {
+            if (!authToken) return;
+            
+            const isSharing = document.getElementById('service-toggle').checked;
+            
+            try {
+                const response = await fetch('/api/user/update-sharing', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        isSharing: isSharing,
+                        sharedData: isSharing ? 0.1 : 0,
+                        connectionTime: isSharing ? 1 : 0
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updateDashboardUI(data);
+                    
+                    // Start Bright Data SDK if service is active
+                    if (isSharing && window.BrightSDK) {
+                        try {
+                            window.BrightSDK.start('agnel9t7jrcjh4hx1vofs1qepxynstng');
+                            console.log('Bright Data SDK started');
+                        } catch (e) {
+                            console.error('Bright SDK error:', e);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to update sharing status:', error);
+                document.getElementById('service-toggle').checked = !isSharing;
+            }
         }
-        
-        const data = await response.json();
-        // تحديث الواجهة بالبيانات المؤكدة من السيرفر
-        updateDashboardUI(data);
-
-    } catch (error) {
-        console.error('Failed to update sharing status:', error);
-        // في حال فشل الاتصال فقط، نعيد الزر لحالته السابقة
-        serviceToggle.checked = !isSharing;
-        alert('Connection error. Please try again.');
-    }
-}
         
         // Process withdrawal
         async function processWithdrawal() {
@@ -995,11 +970,10 @@
         }
         
         // Helper function to show dashboard
-       function showDashboard() {
-    authScreen.classList.remove('active');
-    dashboardScreen.classList.add('active');
-    updateShareLinks(); // <-- أضف هذا السطر هنا
-}
+        function showDashboard() {
+            authScreen.classList.remove('active');
+            dashboardScreen.classList.add('active');
+        }
         
         // Auto-refresh dashboard every 30 seconds
         setInterval(() => {
