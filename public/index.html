@@ -517,33 +517,32 @@
                 </div>
                 
                 <div style="background: rgba(255, 193, 7, 0.1); color: #ffc107; padding: 12px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 20px; border: 1px solid rgba(255, 193, 7, 0.3);">
-                    <i class="fas fa-exclamation-triangle"></i> <b>Notice:</b> All transaction fees (Western Union, Local Exchange, or USDT Network) will be deducted from your total withdrawal amount.
+                    <i class="fas fa-info-circle"></i> <b>Notice:</b> Minimum withdrawal amount is <b>$20 (2,000 Points)</b>. Fees will be deducted from your total.
                 </div>
 
                 <div class="input-group">
-                    <label style="color: #888; font-size: 0.8rem; margin-bottom: 5px; display: block;">Select Payout Method:</label>
+                    <label style="color: #888; font-size: 0.8rem; margin-bottom: 5px; display: block;">Payout Method:</label>
                     <select id="payout-method" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 15px;">
                         <option value="western">🌍 Western Union (International)</option>
                         <option value="yemen">🇾🇪 Yemen (Al-Kuraimi / Al-Najm)</option>
                         <option value="usdt">💎 Crypto (USDT - TRC20)</option>
-                        <option value="mobile">📱 Mobile Top-up (Local Only)</option>
                     </select>
 
-                    <input type="text" id="payout-name" placeholder="Full Name (As shown in ID/Passport)" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 12px;">
+                    <input type="text" id="payout-name" placeholder="Full Name (ID/Passport Required)" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 12px;">
                     
                     <input type="text" id="payout-phone" placeholder="Phone Number (e.g. +967...)" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 12px;">
                     
-                    <input type="email" id="payout-email" placeholder="Email Address (For receipt delivery)" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 12px;">
+                    <input type="email" id="payout-email" placeholder="Email (For receipt confirmation)" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 12px;">
 
-                    <input type="number" id="withdrawal-amount" placeholder="Enter points (min: 1000)" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 15px;">
+                    <input type="number" id="withdrawal-amount" placeholder="Enter points (min: 2000)" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 15px;">
                     
-                    <button class="btn btn-primary" id="withdraw-btn" style="background: linear-gradient(45deg, #00ff88, #00d4ff); border: none; color: #000; font-weight: bold;">
-                        <i class="fas fa-paper-plane"></i> Submit Request
+                    <button class="btn btn-primary" id="withdraw-btn" style="background: linear-gradient(45deg, #00ff88, #00d4ff); border: none; color: #000; font-weight: bold; width: 100%;">
+                        <i class="fas fa-paper-plane"></i> Submit Withdrawal Request
                     </button>
                 </div>
                 
                 <div style="text-align: center; margin-top: 15px;">
-                    <small style="color: #555;">Current Rate: 100 points = $1.00</small>
+                    <small style="color: #555;">Rate: 100 pts = $1.00 | Min: 2000 pts</small>
                 </div>
             </div>
                 
