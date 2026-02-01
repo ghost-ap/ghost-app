@@ -511,52 +511,41 @@
             </div>
             
             <!-- Withdrawal Card -->
-            <div id="withdraw-container" style="direction: rtl; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #ffffff; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 500px; margin: 20px auto; border: 1px solid #e0e0e0;">
-    
-    <div style="text-align: center; margin-bottom: 20px;">
-        <h2 style="color: #2c3e50; margin-bottom: 5px;">💰 سحب الأرباح</h2>
-        <p style="color: #7f8c8d; font-size: 0.9rem;">اختر وسيلتك المفضلة لاستلام أموالك</p>
-    </div>
-
-    <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 20px; border-right: 5px solid #ffeeba;">
-        ⚠️ <b>ملاحظة مهمة:</b> جميع رسوم وعمولات التحويل (ويسترن يونيون، الصرافين، أو شبكة USDT) يتم خصمها من مبلغ السحب الخاص بك.
-    </div>
-
-    <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #34495e;">🌐 اختر وسيلة التحويل:</label>
-    <select id="payout-method" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 15px; background: #f9f9f9;">
-        <option value="yemen">🇾🇪 اليمن (النجم / الكريمي / محفظة جوال)</option>
-        <option value="western">🌍 دولي (Western Union - ويسترن يونيون)</option>
-        <option value="crypto">💎 عملات رقمية (USDT - TRC20)</option>
-    </select>
-
-    <div id="user-info">
-        <input type="text" id="full-name" placeholder="👤 الاسم الرباعي (كما في الهوية)" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-        
-        <input type="number" id="phone-number" placeholder="📱 رقم الهاتف مع مفتاح الدولة (مثال: 967...)" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-        
-        <input type="email" id="user-email" placeholder="📧 البريد الإلكتروني (لتصلك صورة الحوالة)" style="width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-        
-        <input type="text" id="wallet-address" placeholder="🔗 عنوان محفظة USDT (اختياري إذا اخترت كريبتو)" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box;">
-    </div>
-
-    <button onclick="sendWithdrawRequest()" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);">
-        إرسال طلب السحب الآن 🚀
-    </button>
-
-    <p style="text-align: center; font-size: 0.75rem; color: #95a5a6; margin-top: 15px;">
-        يتم معالجة الطلبات خلال 24-48 ساعة عمل.
-    </p>
-</div>
-                
-                <div class="input-group">
-                    <label>Your Referral Code</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="referral-code" readonly style="flex: 1;">
-                        <button class="header-btn" id="copy-referral">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                    </div>
+           <div class="card" style="border: 1px solid #333; background: #111; border-radius: 20px; padding: 25px;">
+                <div class="card-header" style="border-bottom: 1px solid #222; margin-bottom: 20px;">
+                    <h3 style="color: #00ff88;"><i class="fas fa-wallet"></i> Withdraw Earnings</h3>
                 </div>
+                
+                <div style="background: rgba(255, 193, 7, 0.1); color: #ffc107; padding: 12px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 20px; border: 1px solid rgba(255, 193, 7, 0.3);">
+                    <i class="fas fa-exclamation-triangle"></i> <b>Notice:</b> All transaction fees (Western Union, Local Exchange, or USDT Network) will be deducted from your total withdrawal amount.
+                </div>
+
+                <div class="input-group">
+                    <label style="color: #888; font-size: 0.8rem; margin-bottom: 5px; display: block;">Select Payout Method:</label>
+                    <select id="payout-method" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 15px;">
+                        <option value="western">🌍 Western Union (International)</option>
+                        <option value="yemen">🇾🇪 Yemen (Al-Kuraimi / Al-Najm)</option>
+                        <option value="usdt">💎 Crypto (USDT - TRC20)</option>
+                        <option value="mobile">📱 Mobile Top-up (Local Only)</option>
+                    </select>
+
+                    <input type="text" id="payout-name" placeholder="Full Name (As shown in ID/Passport)" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 12px;">
+                    
+                    <input type="text" id="payout-phone" placeholder="Phone Number (e.g. +967...)" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 12px;">
+                    
+                    <input type="email" id="payout-email" placeholder="Email Address (For receipt delivery)" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 12px;">
+
+                    <input type="number" id="withdrawal-amount" placeholder="Enter points (min: 1000)" style="width: 100%; padding: 12px; background: #1a1a1a; color: white; border: 1px solid #333; border-radius: 8px; margin-bottom: 15px;">
+                    
+                    <button class="btn btn-primary" id="withdraw-btn" style="background: linear-gradient(45deg, #00ff88, #00d4ff); border: none; color: #000; font-weight: bold;">
+                        <i class="fas fa-paper-plane"></i> Submit Request
+                    </button>
+                </div>
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <small style="color: #555;">Current Rate: 100 points = $1.00</small>
+                </div>
+            </div>
                 
                 <div class="stats-grid">
                     <div class="stat-item">
