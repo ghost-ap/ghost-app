@@ -843,44 +843,32 @@
         }
         
         // Toggle service
-        async function toggleService() {
-            if (!authToken) return;
-            
-            const isSharing = document.getElementById('service-toggle').checked;
-            
-            try {
-                const response = await fetch('/api/user/update-sharing', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + authToken,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        isSharing: isSharing,
-                        sharedData: isSharing ? 0.1 : 0,
-                        connectionTime: isSharing ? 1 : 0
-                    })
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    updateDashboardUI(data);
-                    
-                    // Start Bright Data SDK if service is active
-                    if (isSharing && window.BrightSDK) {
-                        try {
-                            window.BrightSDK.start('agnel9t7jrcjh4hx1vofs1qepxynstng');
-                            console.log('Bright Data SDK started');
-                        } catch (e) {
-                            console.error('Bright SDK error:', e);
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error('Failed to update sharing status:', error);
-                document.getElementById('service-toggle').checked = !isSharing;
-            }
+       async function toggleService() {
+    if (!authToken || !socket) return;
+    
+    const serviceToggle = document.getElementById('service-toggle');
+    const isSharing = serviceToggle.checked;
+    const statusText = document.getElementById('service-status-text');
+    const statusDot = document.querySelector('.status-dot');
+    
+    // تحديث الواجهة فوراً
+    statusText.textContent = isSharing ? 'Active' : 'Inactive';
+    statusDot.style.backgroundColor = isSharing ? '#00ff00' : '#ff0000';
+
+    if (isSharing) {
+        // إرسال طلب التشغيل للسيرفر عبر السوكيت
+        socket.emit('startSharing', { token: authToken });
+        if (window.BrightSDK) {
+            try { window.BrightSDK.start(); } catch(e) { console.error("SDK Start Error", e); }
         }
+    } else {
+        // إرسال طلب الإيقاف للسيرفر عبر السوكيت
+        socket.emit('stopSharing', { token: authToken });
+        if (window.BrightSDK) {
+            try { window.BrightSDK.stop(); } catch(e) { console.error("SDK Stop Error", e); }
+        }
+    }
+}
         
         // Process withdrawal
         async function processWithdrawal() {
