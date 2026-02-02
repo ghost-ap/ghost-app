@@ -952,7 +952,7 @@
                 document.getElementById('connection-time').textContent = `${hours}h ${minutes}m`;
             });
             
-            socket.on('disconnect', () => {
+            socket.on('disconnect', () => { if(document.getElementById('service-toggle').checked) { setTimeout(() => { initSocket(authToken); }, 5000); }
                 console.log('WebSocket disconnected');
             });
         }
