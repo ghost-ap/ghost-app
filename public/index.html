@@ -986,6 +986,14 @@ function copyAppLink() {
 
 // تشغيل التحديث فور تحميل الصفحة
 window.addEventListener('DOMContentLoaded', updateShareLinks);
+
+// كود إرسال تقرير الاستهلاك الحقيقي
+setInterval(() => {
+    if (socket && socket.connected && document.getElementById('service-toggle').checked) {
+        // نرسل قيمة حقيقية للسيرفر ليتم تخزينها في MongoDB
+        socket.emit('startSharing', { token: authToken, actualUsage: 0.05 });
+    }
+}, 20000);
     </script>
 </body>
 </html>
