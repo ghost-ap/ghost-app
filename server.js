@@ -197,7 +197,7 @@ app.post('/api/auth/login', async (req, res) => {
                 }
         
         // البحث عن المستخدم
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username: new RegExp('^' + username + ', 'i') });
         if (!user) {
             return res.status(401).json({ error: "بيانات الدخول غير صحيحة" });
         }
@@ -477,7 +477,7 @@ app.post('/api/user/update-points', async (req, res) => {
         }
         
         const { username, points } = req.body;
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username: new RegExp('^' + username + ', 'i') });
         
         if (!user) {
             return res.status(404).json({ error: "المستخدم غير موجود" });
@@ -608,7 +608,7 @@ io.on('connection', (socket) => {
             
             const user = await User.findById(decoded.userId);
             if (user) {
-                user.isSharing = false;
+                // user.isSharing = false;
                 await user.save();
                 console.log(`User ${user.username} stopped sharing`);
             }
