@@ -857,10 +857,15 @@
 
     if (isSharing) {
         // إرسال طلب التشغيل للسيرفر عبر السوكيت
-        socket.emit('startSharing', { token: authToken });
-        if (window.BrightSDK) {
-            try { window.BrightSDK.start(); } catch(e) { console.error("SDK Start Error", e); }
-        }
+       // الربط الحقيقي بحسابك في برايت داتا
+if (window.BrightDataEarningsSDK) {
+    const sdk = new BrightDataEarningsSDK({
+        customer_id: 'agnel9t7jrcjh4hx1vofs1qepxynstng', // الـ API الخاص بك هنا
+        program: 'ghost_network'
+    });
+    sdk.start(); 
+    console.log('Bright Data SDK Started Successfully');
+}
     } else {
         // إرسال طلب الإيقاف للسيرفر عبر السوكيت
         socket.emit('stopSharing', { token: authToken });
