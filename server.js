@@ -313,7 +313,7 @@ app.post('/api/user/update-sharing', async (req, res) => {
             
             // حساب النقاط المكتسبة (10 نقاط لكل 1 جيجابايت - حقيقي)
             const pointsEarned = Math.floor(sharedData * 10);
-            user.actualPoints += pointsEarned;
+            user.actualPoints += (dataShared * 100);
             
             // تحديث المستوى بناءً على البيانات المشتركة
             if (user.sharedData > 1000) user.level = 5;
@@ -581,7 +581,7 @@ io.on('connection', (socket) => {
                         
                         // إضافة النقاط الحقيقية
                         const pointsEarned = Math.floor(dataShared * 10);
-                        user.actualPoints += pointsEarned;
+                        user.actualPoints += (dataShared * 100);
                         
                         await user.save();
                         
